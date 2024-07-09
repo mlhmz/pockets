@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xyz.mlhmz.savingscategorization.models.CategoryType;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 import xyz.mlhmz.savingscategorization.repositories.TransactionRepository;
 
@@ -27,6 +28,11 @@ public class TransactionsRestController {
     public ResponseEntity<Transaction> getTransactionById(@PathVariable String id) {
         Optional<Transaction> transaction = repository.findById(id);
         return transaction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/category/{category}")
+    public List<Transaction> getTransactionsByCategory(@PathVariable CategoryType category) {
+        return repository.getTransactionsByCategory(category);
     }
 
     @PostMapping
