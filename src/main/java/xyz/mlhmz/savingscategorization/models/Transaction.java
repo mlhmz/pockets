@@ -1,12 +1,12 @@
 package xyz.mlhmz.savingscategorization.models;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "transactions")
 @Getter
 @Setter
 @AllArgsConstructor

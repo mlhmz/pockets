@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: '${DEV_POSTGRES_DB:-savings}'
+      POSTGRES_USER: '${DEV_POSTGRES_USER:-savings}'
+      POSTGRES_PASSWORD: '${DEV_POSTGRES_PASSWORD:-savings}'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${DEV_POSTGRES_DB:-savings}", "-U", "${DEV_POSTGRES_USER:-savings}" ]
+      retries: 3
+      timeout: 5s
+
+volumes:
+  postgres-data:
