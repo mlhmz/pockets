@@ -1,3 +1,5 @@
+import { CategoryType } from "./CategoryType";
+
 export interface Transaction {
   id?: string;
   reason?: string;
@@ -9,11 +11,9 @@ export interface Transaction {
 
 export type Transactions = Array<Transaction>;
 
-export enum CategoryType {
-  Vacation = "VACATION",
-  Liability = "LIABILITY",
-  Gas = "GAS",
-  CarInsurance = "CAR_INSURANCE",
-  PublicBroadcast = "PUBLIC_BROADCAST",
-  NoCategory = "NO_CATEGORY",
+export function calculateSum(transactions: Transactions) {
+  const totalAmount = transactions.reduce((sum, transaction) => {
+    return sum + (transaction.amount || 0);
+  }, 0);
+  return totalAmount;
 }
