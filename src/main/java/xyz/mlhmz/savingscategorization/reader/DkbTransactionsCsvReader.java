@@ -7,7 +7,10 @@ import org.apache.commons.csv.CSVRecord;
 import xyz.mlhmz.savingscategorization.models.CategoryType;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -26,7 +29,15 @@ public class DkbTransactionsCsvReader implements TransactionsCsvReader {
         CSVFormat csvFormat = getDefaultCsvFormat();
 
         List<Transaction> transactions;
-        try (CSVParser csvParser = CSVParser.parse(input, csvFormat)) {
+        try (Reader inputReader = new StringReader(input)) {
+            BufferedReader bufferedReader = new BufferedReader(inputReader);
+            CSVParser csvParser = CSVParser.parse(bufferedReader, csvFormat);
+
+            // The first 5 lines of a dkb csv are irrelevant
+            for (int i = 0; i < 5; i++) {
+                bufferedReader.readLine();
+            }
+
             transactions = csvParser.getRecords().stream()
                     .map(mapDkbCsvEntryToTransaction())
                     .collect(Collectors.toList());

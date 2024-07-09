@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class Transaction {
     @Id
     String id;
+    @Column(columnDefinition = "TEXT")
     String reason;
     String issuer;
     LocalDate localDate;
