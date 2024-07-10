@@ -1,28 +1,25 @@
-import {
-  CategoryType,
-  getCategoryIcon,
-  getCategoryName,
-} from "@/types/CategoryType";
-import { Transactions, calculateSum } from "@/types/Transaction";
-import { useQuery } from "@tanstack/react-query";
+import { getCategoryIcon, getCategoryName } from "@/types/CategoryType";
+import { CategoryTransaction } from "@/types/Transaction";
+import { CurrencyDisplay } from "./CurrencyDisplay";
 
-async function fetchTransactionsWithCategory(category: CategoryType) {
-  const result = await fetch(`/api/v1/transactions/category/${category}`);
-  const data = await result.json();
-  return data as Transactions;
-}
-
-export const Category = ({ category }: { category: CategoryType }) => {
-  const { data } = useQuery({
-    queryKey: ["transaction", category],
-    queryFn: () => fetchTransactionsWithCategory(category),
-  });
-
+export const Category = ({
+  categoryTransaction,
+}: {
+  categoryTransaction: CategoryTransaction;
+}) => {
   return (
-    <div>
-      <p>{getCategoryIcon(category)}</p>
-      <p>{getCategoryName(category)}</p>
-      <p>{data && calculateSum(data)}</p>
-    </div>
+    <>
+      <div className="flex gap-3 p-3 border-b border-b-border">
+        <p>
+          {categoryTransaction.type &&
+            getCategoryIcon(categoryTransaction.type)}
+        </p>
+        <p>
+          {categoryTransaction.type &&
+            getCategoryName(categoryTransaction.type)}
+        </p>
+        <CurrencyDisplay value={categoryTransaction.sum ?? 0} />
+      </div>
+    </>
   );
 };

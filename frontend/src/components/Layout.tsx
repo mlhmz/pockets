@@ -68,7 +68,7 @@ export const Layout = () => {
               to={link.href}
             >
               <Button
-                className="flex justify-start items-center gap-1 font-bold"
+                className="flex justify-start items-center gap-1 font-bold w-full hover:text-primary"
                 variant={"ghost"}
               >
                 {link.icon}

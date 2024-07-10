@@ -16,7 +16,7 @@ export enum CategoryType {
   NoCategory = "NO_CATEGORY",
 }
 
-export function getCategoryName(category: CategoryType) {
+export function getCategoryName(category?: CategoryType) {
   switch (category) {
     case CategoryType.Vacation:
       return "Category";
@@ -28,7 +28,7 @@ export function getCategoryName(category: CategoryType) {
       return "Car Insurance";
     case CategoryType.PublicBroadcast:
       return "Public Broadcast";
-    case CategoryType.NoCategory:
+    default:
       return "No Category";
   }
 }
@@ -45,7 +45,7 @@ export function getCategoryIcon(category: CategoryType) {
       return <Car />;
     case CategoryType.PublicBroadcast:
       return <Tv />;
-    case CategoryType.NoCategory:
+    default:
       return <CircleSlash />;
   }
 }
