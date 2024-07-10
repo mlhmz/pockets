@@ -5,12 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xyz.mlhmz.savingscategorization.models.CategoryTransactionsDto;
 import xyz.mlhmz.savingscategorization.models.CategoryType;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 import xyz.mlhmz.savingscategorization.repositories.TransactionRepository;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/transactions")
@@ -33,6 +36,17 @@ public class TransactionsRestController {
     @GetMapping("/category/{category}")
     public List<Transaction> getTransactionsByCategory(@PathVariable CategoryType category) {
         return repository.getTransactionsByCategory(category);
+    }
+
+    @GetMapping("/category")
+    public List<CategoryTransactionsDto> getTransactionsGroupedByCategory() {
+        return Arrays.stream(CategoryType.values()).map(categoryType -> {
+            List<Transaction> transactions = repository.getTransactionsByCategory(categoryType);
+            double sum = transactions.stream().reduce(
+                    0D, (previousValue, transaction) -> previousValue + transaction.getAmount(), Double::sum
+            );
+            return new CategoryTransactionsDto(categoryType, sum, transactions);
+        }).collect(Collectors.toList());
     }
 
     @PostMapping
