@@ -62,7 +62,7 @@ export const CategoriesChart = ({ data }: { data: CategoryTransactions }) => {
   }, [data]);
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col my-2 py-1">
       <CardHeader className="items-center pb-0">
         <CardTitle>Breakdown</CardTitle>
       </CardHeader>
@@ -73,7 +73,7 @@ export const CategoriesChart = ({ data }: { data: CategoryTransactions }) => {
         >
           <PieChart>
             <ChartTooltip
-              cursor={false}
+              cursor={true}
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
@@ -81,7 +81,7 @@ export const CategoriesChart = ({ data }: { data: CategoryTransactions }) => {
               dataKey="sum"
               nameKey="type"
               innerRadius={80}
-              strokeWidth={5}
+              strokeWidth={1}
             >
               <Label
                 content={({ viewBox }) => {
