@@ -29,4 +29,12 @@ public class Transaction {
     @JoinTable(name = "pocket_transactions", joinColumns = {@JoinColumn(name = "transactions_id", referencedColumnName = "id")},
         inverseJoinColumns = {@JoinColumn(name = "pocket_uuid", referencedColumnName = "uuid")})
     private Pocket pocket;
+
+    public Transaction(String id, String reason, String issuer, LocalDate date, double amount) {
+        this.id = id;
+        this.reason = reason;
+        this.issuer = issuer;
+        this.date = date;
+        this.amount = amount;
+    }
 }

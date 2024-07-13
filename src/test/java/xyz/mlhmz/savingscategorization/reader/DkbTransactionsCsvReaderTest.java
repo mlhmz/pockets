@@ -2,30 +2,21 @@ package xyz.mlhmz.savingscategorization.reader;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import xyz.mlhmz.savingscategorization.PostgresContextContainerTest;
 import xyz.mlhmz.savingscategorization.exceptions.EntityAlreadyExistsException;
-import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.models.Transaction;
-import xyz.mlhmz.savingscategorization.services.PocketService;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
-class DkbTransactionsCsvReaderIntegrationTest extends PostgresContextContainerTest {
+class DkbTransactionsCsvReaderTest {
 
     public static final String READ_TRANSACTIONS_FROM_CSV_PATH = "DkbTransactionsCsvReaderTest_readTransactionsFromCsv.csv";
 
-    @Autowired
-    DkbTransactionsCsvReader reader;
-    @Autowired
-    PocketService pocketService;
+    DkbTransactionsCsvReader reader = new DkbTransactionsCsvReader();
 
     @Test
     void readTransactionsFromCsv() throws IOException, EntityAlreadyExistsException {
@@ -34,18 +25,6 @@ class DkbTransactionsCsvReaderIntegrationTest extends PostgresContextContainerTe
                 this.getClass().getResourceAsStream(READ_TRANSACTIONS_FROM_CSV_PATH),
                 StandardCharsets.UTF_8
         );
-
-        Pocket vacationPocket = new Pocket();
-        vacationPocket.setName("Journey");
-        vacationPocket.setKeywords(List.of("Journey", "Vacation"));
-
-        Pocket shoppingPocket = new Pocket();
-        shoppingPocket.setName("Journey");
-        shoppingPocket.setKeywords(List.of("Shopping"));
-
-        vacationPocket = pocketService.createPocket(vacationPocket);
-        shoppingPocket = pocketService.createPocket(shoppingPocket);
-
 
         List<Transaction> transactions = reader.readTransactionsFromCsv(input);
 
@@ -65,10 +44,5 @@ class DkbTransactionsCsvReaderIntegrationTest extends PostgresContextContainerTe
         assertThat(shoppingTransaction.getIssuer()).isEqualTo("TESTUSER2");
         assertThat(shoppingTransaction.getDate()).hasDayOfMonth(9).hasMonth(Month.JULY).hasYear(2024);
         assertThat(shoppingTransaction.getReason()).isEqualTo("Shopping blablabla July");
-
-        assertThat(vacationPocket).isNotNull();
-        assertThat(shoppingPocket).isNotNull();
-        assertThat(journeyTransaction.getPocket().getUuid()).isEqualTo(vacationPocket.getUuid());
-        assertThat(shoppingTransaction.getPocket().getUuid()).isEqualTo(shoppingPocket.getUuid());
     }
 }

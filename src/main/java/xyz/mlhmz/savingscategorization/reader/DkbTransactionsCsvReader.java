@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 import xyz.mlhmz.savingscategorization.services.PocketService;
+import xyz.mlhmz.savingscategorization.services.TransactionService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,8 +29,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class DkbTransactionsCsvReader implements TransactionsCsvReader {
     public static final DateTimeFormatter DKB_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy");
-
-    private PocketService pocketService;
 
     public List<Transaction> readTransactionsFromCsv(String input) {
         CSVFormat csvFormat = getDefaultCsvFormat();
@@ -61,8 +60,7 @@ public class DkbTransactionsCsvReader implements TransactionsCsvReader {
             LocalDate date = LocalDate.from(DKB_FORMATTER.parse(dateString));
             double value = Double.parseDouble(entry.get(8).replace(",", "."));
             String id = generateIdByValues(reason, issuer, dateString, value);
-            Pocket pocket = pocketService.determinePocketByReason(reason);
-            return new Transaction(id, reason, issuer, date, value, pocket);
+            return new Transaction(id, reason, issuer, date, value);
         };
     }
 
