@@ -6,10 +6,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
-import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.models.Transaction;
-import xyz.mlhmz.savingscategorization.services.PocketService;
-import xyz.mlhmz.savingscategorization.services.TransactionService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -65,7 +62,7 @@ public class DkbTransactionsCsvReader implements TransactionsCsvReader {
     }
 
     private String generateIdByValues(String reason, String issuer, String date, double amount) {
-        MessageDigest md = null;
+        MessageDigest md;
         try {
             md = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {

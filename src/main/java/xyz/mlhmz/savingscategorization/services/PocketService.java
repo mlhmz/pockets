@@ -5,7 +5,6 @@ import xyz.mlhmz.savingscategorization.exceptions.EntityNotFoundException;
 import xyz.mlhmz.savingscategorization.models.Pocket;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface PocketService {

@@ -19,7 +19,7 @@ class DkbTransactionsCsvReaderTest {
     DkbTransactionsCsvReader reader = new DkbTransactionsCsvReader();
 
     @Test
-    void readTransactionsFromCsv() throws IOException, EntityAlreadyExistsException {
+    void readTransactionsFromCsv() throws IOException {
         // First five lines of the dkb csv are irrelevant
         String input = IOUtils.toString(
                 this.getClass().getResourceAsStream(READ_TRANSACTIONS_FROM_CSV_PATH),

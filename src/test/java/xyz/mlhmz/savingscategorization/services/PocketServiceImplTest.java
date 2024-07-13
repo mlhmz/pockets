@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import xyz.mlhmz.savingscategorization.exceptions.EntityNotFoundException;
@@ -52,7 +51,7 @@ class PocketServiceImplTest {
             "nonsensekeyword!;-1",
             "idontexist,yet!;-1"
     }, delimiter = ';')
-    void determinePocketByReason(String reason, int pocketIndex) throws EntityNotFoundException {
+    void determinePocketByReason(String reason, int pocketIndex) {
         List<Pocket> pockets = createPocketsAndMockFindAllWithThem();
 
         Pocket pocket = pocketService.determinePocketByReason(reason);
