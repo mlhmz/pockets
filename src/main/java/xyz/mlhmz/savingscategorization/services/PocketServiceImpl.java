@@ -47,6 +47,11 @@ public class PocketServiceImpl implements PocketService {
     }
 
     @Override
+    public double sumPocketTransactions(Pocket pocket) {
+        return pocketRepository.sumPocketsTransactionsByUuid(pocket.getUuid());
+    }
+
+    @Override
     public void deletePocket(Pocket pocket) {
         pocketRepository.delete(pocket);
     }

@@ -17,6 +17,8 @@ public interface PocketService {
 
     List<Pocket> findAllPockets();
 
+    double sumPocketTransactions(Pocket pocket);
+
     void deletePocket(Pocket pocket);
 
     Pocket determinePocketByReason(String reason);
