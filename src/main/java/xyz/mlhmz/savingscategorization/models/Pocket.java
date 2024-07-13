@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.id.uuid.UuidGenerator;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Pocket {
     @Id
+    @GeneratedValue(generator = "UuidGenerator2")
     private UUID uuid;
     private String name;
     private String description;
