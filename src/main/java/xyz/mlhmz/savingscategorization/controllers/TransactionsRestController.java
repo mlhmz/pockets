@@ -1,26 +1,25 @@
 package xyz.mlhmz.savingscategorization.controllers;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.mlhmz.savingscategorization.models.CategoryTransactionsDto;
-import xyz.mlhmz.savingscategorization.models.CategoryType;
+import xyz.mlhmz.savingscategorization.models.PocketTransactionsDto;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 import xyz.mlhmz.savingscategorization.repositories.TransactionRepository;
+import xyz.mlhmz.savingscategorization.services.PocketService;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/transactions")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class TransactionsRestController {
-    @NonNull
     TransactionRepository repository;
+    PocketService pocketService;
 
     @GetMapping
     public List<Transaction> getAllTransactions() {
@@ -33,19 +32,19 @@ public class TransactionsRestController {
         return transaction.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/category/{category}")
-    public List<Transaction> getTransactionsByCategory(@PathVariable CategoryType category) {
-        return repository.getTransactionsByCategory(category);
+    @GetMapping("/pocket/{pocketUuid}")
+    public List<Transaction> getTransactionsByCategory(@PathVariable UUID pocketUuid) {
+        return repository.findTransactionsByPocketUuid(pocketUuid);
     }
 
     @GetMapping("/category")
-    public List<CategoryTransactionsDto> getTransactionsGroupedByCategory() {
-        return Arrays.stream(CategoryType.values()).map(categoryType -> {
-            List<Transaction> transactions = repository.getTransactionsByCategory(categoryType);
+    public List<PocketTransactionsDto> getTransactionsGroupedByCategory() {
+        return pocketService.findAllPockets().stream().map(pocket -> {
+            List<Transaction> transactions = repository.findTransactionsByPocketUuid(pocket.getUuid());
             double sum = transactions.stream().reduce(
                     0D, (previousValue, transaction) -> previousValue + transaction.getAmount(), Double::sum
             );
-            return new CategoryTransactionsDto(categoryType, sum, transactions);
+            return new PocketTransactionsDto(pocket.getName(), sum, transactions);
         }).collect(Collectors.toList());
     }
 

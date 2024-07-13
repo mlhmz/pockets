@@ -15,11 +15,18 @@ import java.time.LocalDate;
 public class Transaction {
     @Id
     String id;
+
     @Column(columnDefinition = "TEXT")
     String reason;
+
     String issuer;
-    LocalDate localDate;
+
+    LocalDate date;
+
     double amount;
-    @Enumerated(value = EnumType.STRING)
-    private CategoryType category;
+
+    @ManyToOne
+    @JoinTable(name = "pocket_transactions", joinColumns = {@JoinColumn(name = "transactions_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "pocket_uuid", referencedColumnName = "uuid")})
+    private Pocket pocket;
 }

@@ -1,11 +1,15 @@
 package xyz.mlhmz.savingscategorization.reader;
 
 
+import lombok.AllArgsConstructor;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.stereotype.Component;
 import xyz.mlhmz.savingscategorization.models.CategoryType;
+import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.models.Transaction;
+import xyz.mlhmz.savingscategorization.services.PocketService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,9 +25,12 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Component
+@AllArgsConstructor
 public class DkbTransactionsCsvReader implements TransactionsCsvReader {
-
     public static final DateTimeFormatter DKB_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy");
+
+    private PocketService pocketService;
 
     public List<Transaction> readTransactionsFromCsv(String input) {
         CSVFormat csvFormat = getDefaultCsvFormat();
@@ -55,8 +62,8 @@ public class DkbTransactionsCsvReader implements TransactionsCsvReader {
             LocalDate date = LocalDate.from(DKB_FORMATTER.parse(dateString));
             double value = Double.parseDouble(entry.get(8).replace(",", "."));
             String id = generateIdByValues(reason, issuer, dateString, value);
-            CategoryType categoryType = CategoryType.detectByString(reason);
-            return new Transaction(id, reason, issuer, date, value, categoryType);
+            Pocket pocket = pocketService.determinePocketByReason(reason);
+            return new Transaction(id, reason, issuer, date, value, pocket);
         };
     }
 

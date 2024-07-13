@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import xyz.mlhmz.savingscategorization.models.Transaction;
-import xyz.mlhmz.savingscategorization.reader.DkbTransactionsCsvReader;
 import xyz.mlhmz.savingscategorization.reader.TransactionsCsvReader;
 import xyz.mlhmz.savingscategorization.repositories.TransactionRepository;
 
@@ -18,7 +17,8 @@ import java.util.List;
 @RequestMapping("/api/v1/dkb")
 @RequiredArgsConstructor
 public class DkbRestController {
-    private final TransactionsCsvReader csvReader = new DkbTransactionsCsvReader();
+    @NonNull
+    private final TransactionsCsvReader csvReader;
     @NonNull
     private final TransactionRepository repository;
 
