@@ -64,11 +64,11 @@ class DkbTransactionsCsvReaderIntegrationTest extends PostgresContextContainerTe
         assertThat(shoppingTransaction.getAmount()).isEqualTo(-100);
         assertThat(shoppingTransaction.getIssuer()).isEqualTo("TESTUSER2");
         assertThat(shoppingTransaction.getDate()).hasDayOfMonth(9).hasMonth(Month.JULY).hasYear(2024);
-        assertThat(shoppingTransaction.getReason()).isEqualTo("Blablabla Journey bla");
+        assertThat(shoppingTransaction.getReason()).isEqualTo("Shopping blablabla July");
 
         assertThat(vacationPocket).isNotNull();
         assertThat(shoppingPocket).isNotNull();
-        assertThat(journeyTransaction.getPocket()).isEqualTo(vacationPocket);
-        assertThat(shoppingTransaction.getPocket()).isEqualTo(shoppingPocket);
+        assertThat(journeyTransaction.getPocket().getUuid()).isEqualTo(vacationPocket.getUuid());
+        assertThat(shoppingTransaction.getPocket().getUuid()).isEqualTo(shoppingPocket.getUuid());
     }
 }
