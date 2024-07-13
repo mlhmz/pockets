@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import xyz.mlhmz.savingscategorization.PostgresContextContainerTest;
+import xyz.mlhmz.savingscategorization.exceptions.EntityAlreadyExistsException;
 import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 import xyz.mlhmz.savingscategorization.services.PocketService;
@@ -15,6 +16,7 @@ import java.time.Month;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 class DkbTransactionsCsvReaderIntegrationTest extends PostgresContextContainerTest {
 
@@ -26,7 +28,7 @@ class DkbTransactionsCsvReaderIntegrationTest extends PostgresContextContainerTe
     PocketService pocketService;
 
     @Test
-    void readTransactionsFromCsv() throws IOException {
+    void readTransactionsFromCsv() throws IOException, EntityAlreadyExistsException {
         // First five lines of the dkb csv are irrelevant
         String input = IOUtils.toString(
                 this.getClass().getResourceAsStream(READ_TRANSACTIONS_FROM_CSV_PATH),
@@ -35,7 +37,7 @@ class DkbTransactionsCsvReaderIntegrationTest extends PostgresContextContainerTe
 
         Pocket vacationPocket = new Pocket();
         vacationPocket.setName("Journey");
-        vacationPocket.setKeywords(List.of("Journey",  "Vacation"));
+        vacationPocket.setKeywords(List.of("Journey", "Vacation"));
 
         Pocket shoppingPocket = new Pocket();
         shoppingPocket.setName("Journey");
@@ -43,6 +45,7 @@ class DkbTransactionsCsvReaderIntegrationTest extends PostgresContextContainerTe
 
         vacationPocket = pocketService.createPocket(vacationPocket);
         shoppingPocket = pocketService.createPocket(shoppingPocket);
+
 
         List<Transaction> transactions = reader.readTransactionsFromCsv(input);
 

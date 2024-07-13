@@ -3,6 +3,7 @@ package xyz.mlhmz.savingscategorization.services;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import xyz.mlhmz.savingscategorization.PostgresContextContainerTest;
+import xyz.mlhmz.savingscategorization.exceptions.EntityAlreadyExistsException;
 import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.repositories.PocketRepository;
 
@@ -19,7 +20,7 @@ class PocketServiceImplIntegrationTest extends PostgresContextContainerTest {
     PocketRepository pocketRepository;
 
     @Test
-    void createPocket() {
+    void createPocket() throws EntityAlreadyExistsException {
         String name = "Test";
         String desc = "Test desc";
         String iconName = "test-icon";
@@ -33,24 +34,30 @@ class PocketServiceImplIntegrationTest extends PostgresContextContainerTest {
     }
 
     @Test
-    void updatePocket() {
-        Pocket pocket = new Pocket("Test", "Test desc", "test-icon",
-                List.of("first", "second", "third"));
-
+    void updatePocket() throws EntityAlreadyExistsException {
         String updateName = "Test";
         String updateDesc = "Test desc";
         String updateIconName = "test-icon";
         List<String> updateKeywords = List.of("first", "second", "third");
 
-        Pocket result = pocketService.createPocket(pocket);
+        Pocket obj = new Pocket(
+                "Test",
+                "Test desc",
+                "test-icon",
+                List.of("first", "second", "third")
+        );
+        Pocket pocket = pocketService.createPocket(obj);
 
         Pocket updatePayload = new Pocket(updateName, updateDesc, updateIconName, updateKeywords);
 
-        assertPocketFields(updateName, updateDesc, updateIconName, updateKeywords, result);
+        Pocket updateResult = pocketService.updatePocket(pocket, updatePayload);
+
+        assertPocketFields(updateName, updateDesc, updateIconName, updateKeywords, updateResult);
+        assertThat(updateResult.getUuid()).isEqualTo(pocket.getUuid());
     }
 
     @Test
-    void findAllPockets() {
+    void findAllPockets() throws EntityAlreadyExistsException {
         String name1 = "name1";
         String description1 = "testDesc1";
         String iconName1 = "icon-name1";
@@ -80,13 +87,14 @@ class PocketServiceImplIntegrationTest extends PostgresContextContainerTest {
     }
 
     @Test
-    void deletePocket() {
-        Pocket result = pocketService.createPocket(new Pocket(
+    void deletePocket() throws EntityAlreadyExistsException {
+        Pocket pocket = new Pocket(
                 "Test",
                 "Test desc",
                 "test-icon",
                 List.of("first", "second", "third")
-        ));
+        );
+        Pocket result = pocketService.createPocket(pocket);
         UUID pocketUuid = result.getUuid();
 
         pocketService.deletePocket(result);
