@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.mlhmz.savingscategorization.models.PocketTransactionsDto;
+import xyz.mlhmz.savingscategorization.dtos.PocketTransactionsDto;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 import xyz.mlhmz.savingscategorization.repositories.TransactionRepository;
 import xyz.mlhmz.savingscategorization.services.PocketService;

@@ -1,4 +1,6 @@
-package xyz.mlhmz.savingscategorization.models;
+package xyz.mlhmz.savingscategorization.dtos;
+
+import xyz.mlhmz.savingscategorization.models.Transaction;
 
 import java.util.List;
 
