@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import xyz.mlhmz.savingscategorization.PostgresContextContainerTest;
 import xyz.mlhmz.savingscategorization.exceptions.EntityAlreadyExistsException;
+import xyz.mlhmz.savingscategorization.exceptions.EntityNotFoundException;
 import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.repositories.PocketRepository;
 
@@ -54,6 +55,21 @@ class PocketServiceImplIntegrationTest extends PostgresContextContainerTest {
 
         assertPocketFields(updateName, updateDesc, updateIconName, updateKeywords, updateResult);
         assertThat(updateResult.getUuid()).isEqualTo(pocket.getUuid());
+    }
+
+    @Test
+    void findPocketById() throws EntityAlreadyExistsException, EntityNotFoundException {
+        String name = "Test";
+        String desc = "Test desc";
+        String iconName = "test-icon";
+        List<String> keywords = List.of("first", "second", "third");
+        Pocket pocket = new Pocket(name, desc, iconName, keywords);
+        Pocket result = pocketService.createPocket(pocket);
+
+        Pocket findResult = pocketService.findPocketByUuid(result.getUuid());
+
+        assertPocketFields(name, desc, iconName, keywords, findResult);
+        assertThat(findResult.getUuid()).isEqualTo(result.getUuid());
     }
 
     @Test
