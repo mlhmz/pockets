@@ -15,7 +15,7 @@ public interface PocketService {
 
     List<Pocket> findAllPockets();
 
-    void deletePocket();
+    void deletePocket(Pocket pocket);
 
     Pocket determinePocketByReason(String reason);
 }

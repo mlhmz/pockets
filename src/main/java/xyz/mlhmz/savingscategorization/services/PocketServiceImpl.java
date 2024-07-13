@@ -30,7 +30,7 @@ public class PocketServiceImpl implements PocketService {
     }
 
     @Override
-    public void deletePocket() {
+    public void deletePocket(Pocket pocket) {
 
     }
 

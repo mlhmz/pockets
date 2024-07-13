@@ -6,7 +6,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Component;
-import xyz.mlhmz.savingscategorization.models.CategoryType;
 import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 import xyz.mlhmz.savingscategorization.services.PocketService;

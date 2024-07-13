@@ -22,9 +22,16 @@ public class Pocket {
     private String description;
     private String iconName;
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "keywords", joinColumns = @JoinColumn(name = "pocket_uuid"))
+    @CollectionTable(name = "pocket_keywords", joinColumns = @JoinColumn(name = "pocket_uuid"))
     @Column(name = "keyword", nullable = false)
     private List<String> keywords;
     @OneToMany(fetch = FetchType.LAZY)
-    private List<Transaction> transaction;
+    private List<Transaction> transactions;
+
+    public Pocket(String name, String description, String iconName, List<String> keywords) {
+        this.name = name;
+        this.description = description;
+        this.iconName = iconName;
+        this.keywords = keywords;
+    }
 }
