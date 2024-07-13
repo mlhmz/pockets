@@ -7,8 +7,7 @@ import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 import xyz.mlhmz.savingscategorization.repositories.TransactionRepository;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -18,25 +17,39 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> createTransactions(List<Transaction> transactions) {
-        return transactions.stream()
-                .map(this::createTransaction)
+        List<Transaction> result = transactions.stream()
+                .map(this::saveTransaction)
                 .filter(Objects::nonNull)
                 .toList();
+        recalculateAllAffectedPockets(result);
+        return result;
+    }
+
+    @Override
+    public Transaction createTransaction(Transaction transaction) {
+        Transaction result = saveTransaction(transaction);
+        if (result != null) {
+            recalculatePocketSumOnPocketInTransactionNotNull(result);
+        }
+        return result;
     }
 
     /**
      * Transactions, that ids are already persisted are ignored and returned as null
      */
-    @Override
-    public Transaction createTransaction(Transaction transaction) {
+    private Transaction saveTransaction(Transaction transaction) {
         if (!transactionRepository.existsById(transaction.getId())) {
             setPocketIntoTransaction(transaction);
-            Transaction result = transactionRepository.save(transaction);
-            recalculatePocketSumOnPocketInTransactionNotNull(result);
-            return result;
+            return transactionRepository.save(transaction);
         } else {
             return null;
         }
+    }
+
+    private void recalculateAllAffectedPockets(List<Transaction> result) {
+        Map<UUID, Pocket> pocketMap = new HashMap<>();
+        result.stream().map(Transaction::getPocket).filter(Objects::nonNull).forEach(pocket -> pocketMap.put(pocket.getUuid(), pocket));
+        pocketMap.values().forEach(pocketService::recalculatePocketSum);
     }
 
     private void setPocketIntoTransaction(Transaction transaction) {
