@@ -1,5 +1,7 @@
 package xyz.mlhmz.savingscategorization.services;
 
+import xyz.mlhmz.savingscategorization.exceptions.EntityAlreadyExistsException;
+import xyz.mlhmz.savingscategorization.exceptions.EntityNotFoundException;
 import xyz.mlhmz.savingscategorization.models.Pocket;
 
 import java.util.List;
@@ -7,11 +9,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PocketService {
-    Pocket createPocket(Pocket pocket);
+    Pocket createPocket(Pocket pocket) throws EntityAlreadyExistsException;
 
-    Pocket updatePocket(Pocket pocket);
+    Pocket updatePocket(Pocket target, Pocket payload);
 
-    Optional<Pocket> findPocketByUuid(UUID uuid);
+    Pocket findPocketByUuid(UUID uuid) throws EntityNotFoundException;
 
     List<Pocket> findAllPockets();
 

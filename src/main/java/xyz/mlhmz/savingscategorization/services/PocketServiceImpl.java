@@ -1,37 +1,53 @@
 package xyz.mlhmz.savingscategorization.services;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import xyz.mlhmz.savingscategorization.exceptions.EntityAlreadyExistsException;
+import xyz.mlhmz.savingscategorization.exceptions.EntityNotFoundException;
 import xyz.mlhmz.savingscategorization.models.Pocket;
+import xyz.mlhmz.savingscategorization.repositories.PocketRepository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class PocketServiceImpl implements PocketService {
+    PocketRepository pocketRepository;
+
     @Override
-    public Pocket createPocket(Pocket pocket) {
-        return null;
+    public Pocket createPocket(Pocket pocket) throws EntityAlreadyExistsException {
+        if (pocket.getUuid() == null) {
+            return pocketRepository.save(pocket);
+        } else {
+            throw new EntityAlreadyExistsException();
+        }
     }
 
     @Override
-    public Pocket updatePocket(Pocket pocket) {
-        return null;
+    public Pocket updatePocket(Pocket target, Pocket payload) {
+        target.setName(payload.getName());
+        target.setDescription(payload.getDescription());
+        target.setIconName(payload.getIconName());
+        target.setKeywords(payload.getKeywords());
+        return pocketRepository.save(target);
     }
 
     @Override
-    public Optional<Pocket> findPocketByUuid(UUID uuid) {
-        return Optional.empty();
+    public Pocket findPocketByUuid(UUID uuid) throws EntityNotFoundException {
+        Optional<Pocket> pocket = pocketRepository.findById(uuid);
+        return pocket.orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public List<Pocket> findAllPockets() {
-        return List.of();
+        return pocketRepository.findAll();
     }
 
     @Override
     public void deletePocket(Pocket pocket) {
-
+        pocketRepository.delete(pocket);
     }
 
     @Override
