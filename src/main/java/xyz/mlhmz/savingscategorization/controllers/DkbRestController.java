@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import xyz.mlhmz.savingscategorization.dtos.QueryTransactionDto;
 import xyz.mlhmz.savingscategorization.mappers.TransactionMapper;
-import xyz.mlhmz.savingscategorization.models.Transaction;
 import xyz.mlhmz.savingscategorization.reader.TransactionsCsvReader;
 import xyz.mlhmz.savingscategorization.services.TransactionServiceImpl;
 
