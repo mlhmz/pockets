@@ -10,6 +10,7 @@ import xyz.mlhmz.savingscategorization.repositories.PocketRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 @Service
 @AllArgsConstructor
@@ -52,6 +53,14 @@ public class PocketServiceImpl implements PocketService {
 
     @Override
     public Pocket determinePocketByReason(String reason) {
-        return null;
+        List<Pocket> pockets = findAllPockets();
+        return pockets.stream()
+                .filter(isReasonContainingAnyKeywordsPocketPredicate(reason))
+                .findFirst().orElse(null);
+    }
+
+    private Predicate<Pocket> isReasonContainingAnyKeywordsPocketPredicate(String reason) {
+        return pocket -> pocket.getKeywords().stream()
+                .anyMatch(keyword -> reason.toLowerCase().contains(keyword.toLowerCase()));
     }
 }
