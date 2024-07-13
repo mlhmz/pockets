@@ -16,7 +16,7 @@ public interface PocketService {
 
     List<Pocket> findAllPockets();
 
-    double sumPocketTransactions(Pocket pocket);
+    void recalculatePocketSum(Pocket pocket);
 
     void deletePocket(Pocket pocket);
 

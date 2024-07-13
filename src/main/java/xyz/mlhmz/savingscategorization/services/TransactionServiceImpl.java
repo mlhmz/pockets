@@ -31,7 +31,9 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction createTransaction(Transaction transaction) {
         if (!transactionRepository.existsById(transaction.getId())) {
             setPocketIntoTransaction(transaction);
-            return transactionRepository.save(transaction);
+            Transaction result = transactionRepository.save(transaction);
+            recalculatePocketSumOnPocketInTransactionNotNull(result);
+            return result;
         } else {
             return null;
         }
@@ -41,6 +43,13 @@ public class TransactionServiceImpl implements TransactionService {
         if (StringUtils.isNotEmpty(transaction.getReason())) {
             Pocket pocket = pocketService.determinePocketByReason(transaction.getReason());
             transaction.setPocket(pocket);
+        }
+    }
+
+    private void recalculatePocketSumOnPocketInTransactionNotNull(Transaction result) {
+        Pocket pocket = result.getPocket();
+        if (pocket != null) {
+            pocketService.recalculatePocketSum(pocket);
         }
     }
 }

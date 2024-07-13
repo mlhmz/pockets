@@ -41,6 +41,7 @@ class TransactionServiceIntegrationTest extends PostgresContextContainerTest {
         assertThat(result.getDate()).isEqualTo(date);
         assertThat(result.getAmount()).isEqualTo(amount);
         assertThat(result.getPocket().getUuid()).isEqualTo(pocket.getUuid());
+        assertThat(result.getPocket().getTransactionSum()).isEqualTo(100.0);
     }
 
     @Test

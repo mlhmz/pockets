@@ -26,7 +26,7 @@ public class Pocket {
     @CollectionTable(name = "pocket_keywords", joinColumns = @JoinColumn(name = "pocket_uuid"))
     @Column(name = "keyword", nullable = false)
     private List<String> keywords;
-    private transient double transactionSum;
+    private double transactionSum;
     @OneToMany(fetch = FetchType.LAZY)
     private List<Transaction> transactions;
 
