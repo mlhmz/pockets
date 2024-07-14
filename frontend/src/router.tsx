@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Dashboard } from "./components/Dashboard";
 import { Layout } from "./components/Layout";
+import { NotFound } from "./components/NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -21,5 +22,9 @@ export const router = createBrowserRouter([
       },
       { path: "/category/no-category", element: <h1>No Category</h1> },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
