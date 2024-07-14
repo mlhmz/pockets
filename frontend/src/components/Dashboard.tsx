@@ -1,19 +1,19 @@
-import { CategoryTransactions } from "@/types/Transaction";
+import { Pockets } from "@/types/Pocket";
 import { useQuery } from "@tanstack/react-query";
-import { Category } from "./Category";
-import { CategoriesChart } from "./CategoriesChart";
 import { Upload } from "lucide-react";
+import { PocketEntry } from "./PocketEntry";
+import { CategoriesChart } from "./PocketsChart";
 
-async function fetchTransactionsGroupedByCategory() {
-  const result = await fetch(`/api/v1/transactions/category`);
+async function fetchPockets() {
+  const result = await fetch("/api/v1/pockets");
   const data = await result.json();
-  return data as CategoryTransactions;
+  return data as Pockets;
 }
 
 export const Dashboard = () => {
   const { data } = useQuery({
-    queryKey: ["transactions", "categories"],
-    queryFn: () => fetchTransactionsGroupedByCategory(),
+    queryKey: ["pockets"],
+    queryFn: () => fetchPockets(),
   });
 
   return (
@@ -26,8 +26,8 @@ export const Dashboard = () => {
         <div className="flex flex-col gap-2">
           <h2 className="text-lg font-bold">Categories</h2>
           <div className="flex flex-col border border-border rounded-md shadow">
-            {data?.map((categoryTransaction) => (
-              <Category categoryTransaction={categoryTransaction} />
+            {data?.map((entry) => (
+              <PocketEntry pocket={entry} />
             ))}
           </div>
           <div className="flex flex-col bg-gray-100 rounded-md border border-border items-center justify-center min-h-32">
