@@ -1,20 +1,10 @@
-import { Pockets } from "@/types/Pocket";
-import { useQuery } from "@tanstack/react-query";
+import { usePockets } from "@/hooks/use-pockets";
 import { Upload } from "lucide-react";
 import { PocketEntry } from "./PocketEntry";
 import { CategoriesChart } from "./PocketsChart";
 
-async function fetchPockets() {
-  const result = await fetch("/api/v1/pockets");
-  const data = await result.json();
-  return data as Pockets;
-}
-
 export const Dashboard = () => {
-  const { data } = useQuery({
-    queryKey: ["pockets"],
-    queryFn: () => fetchPockets(),
-  });
+  const { data } = usePockets();
 
   return (
     <div>

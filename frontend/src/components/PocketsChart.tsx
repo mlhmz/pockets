@@ -1,15 +1,9 @@
 import { Pocket, Pockets } from "@/types/Pocket";
 import { useMemo, useState } from "react";
-import { Cell, Label, Pie, PieChart } from "recharts";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
-import { ChartConfig, ChartContainer } from "./ui/chart";
 import { useMediaQuery } from "react-responsive";
+import { Cell, Label, Pie, PieChart } from "recharts";
+import { Card, CardContent, CardFooter } from "./ui/card";
+import { ChartConfig, ChartContainer } from "./ui/chart";
 
 export const CategoriesChart = ({ data }: { data: Pockets }) => {
   const chartConfig = {
@@ -37,9 +31,6 @@ export const CategoriesChart = ({ data }: { data: Pockets }) => {
 
   return (
     <Card className="flex flex-col my-2 py-1">
-      <CardHeader className="items-center pb-0">
-        <CardTitle>Breakdown</CardTitle>
-      </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}

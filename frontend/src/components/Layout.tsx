@@ -10,7 +10,7 @@ export const Layout = () => {
   return (
     <div className="flex">
       <SideNav showSideNav={showSideNav} setShowSideNav={setShowSideNav} />
-      <div className="flex-grow overflow-y-auto h-screen lg:h-[90vh]">
+      <div className="flex-grow overflow-y-auto h-screen">
         <div className="p-5">
           <Button
             onClick={() => setShowSideNav(!showSideNav)}
