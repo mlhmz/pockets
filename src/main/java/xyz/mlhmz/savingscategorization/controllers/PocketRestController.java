@@ -14,8 +14,6 @@ import xyz.mlhmz.savingscategorization.services.PocketService;
 import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
 @RestController
 @RequestMapping("/api/v1/pockets")
 @AllArgsConstructor
@@ -31,13 +29,14 @@ public class PocketRestController {
 
     @GetMapping
     public List<QueryPocketDto> findAllPockets() {
-        return pocketService.findAllPockets().stream()
+        List<Pocket> pockets = pocketService.findAllPockets();
+        return pockets.stream()
                 .map(pocketMapper::mapPocketToQueryPocket)
                 .toList();
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<QueryPocketDto> findPocketByUUID(@PathVariable UUID uuid) {
+    public ResponseEntity<QueryPocketDto> findPocketByUuid(@PathVariable UUID uuid) {
         try {
             Pocket pocket = pocketService.findPocketByUuid(uuid);
             return ResponseEntity.ok(pocketMapper.mapPocketToQueryPocket(pocket));

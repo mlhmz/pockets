@@ -6,7 +6,7 @@ public record QueryTransactionDto(
         String id,
         String reason,
         String issuer,
-        LocalDate localDate,
+        LocalDate date,
         double amount,
         QueryTransactionPocketDto pocket
 ) {

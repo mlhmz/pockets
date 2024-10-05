@@ -7,5 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TransactionRepository extends JpaRepository<Transaction, String> {
-    List<Transaction> findTransactionsByPocketUuid(UUID pocketUuid);
+    List<Transaction> findAllByOrderByDateDesc();
+
+    List<Transaction> findTransactionsByPocketUuidOrderByDateDesc(UUID pocketUuid);
 }

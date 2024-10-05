@@ -23,7 +23,7 @@ public class TransactionsRestController {
 
     @GetMapping
     public List<QueryTransactionDto> getAllTransactions() {
-        return repository.findAll().stream()
+        return repository.findAllByOrderByDateDesc().stream()
                 .map(transactionMapper::mapTransactionToQueryTransaction)
                 .toList();
     }
@@ -38,7 +38,7 @@ public class TransactionsRestController {
 
     @GetMapping("/pocket/{pocketUuid}")
     public List<QueryTransactionDto> getTransactionsByCategory(@PathVariable UUID pocketUuid) {
-        return repository.findTransactionsByPocketUuid(pocketUuid).stream()
+        return repository.findTransactionsByPocketUuidOrderByDateDesc(pocketUuid).stream()
                 .map(transactionMapper::mapTransactionToQueryTransaction)
                 .toList();
     }

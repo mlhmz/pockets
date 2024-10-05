@@ -1,7 +1,9 @@
 package xyz.mlhmz.savingscategorization.services;
 
+import io.micrometer.common.util.StringUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import xyz.mlhmz.savingscategorization.exceptions.EntityAlreadyExistsException;
 import xyz.mlhmz.savingscategorization.exceptions.EntityNotFoundException;
 import xyz.mlhmz.savingscategorization.models.Pocket;
@@ -15,6 +17,7 @@ import java.util.function.Predicate;
 @Service
 @AllArgsConstructor
 public class PocketServiceImpl implements PocketService {
+    public static final String NO_CATEGORY_IDENTIFIER = "NO_CATEGORY";
     PocketRepository pocketRepository;
 
     @Override
@@ -61,13 +64,33 @@ public class PocketServiceImpl implements PocketService {
     @Override
     public Pocket determinePocketByReason(String reason) {
         List<Pocket> pockets = findAllPockets();
+        if (StringUtils.isEmpty(reason)) {
+            return getNoCategoryPocket();
+        }
         return pockets.stream()
                 .filter(isReasonContainingAnyKeywordsPocketPredicate(reason))
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElse(getNoCategoryPocket());
+    }
+
+    private Pocket getNoCategoryPocket() {
+        Optional<Pocket> pocket = pocketRepository.findPocketByIdentifier(NO_CATEGORY_IDENTIFIER);
+        Pocket result;
+        if (pocket.isEmpty()) {
+            Pocket noCategory = new Pocket("No Category", null, null, null);
+            noCategory.setIdentifier(NO_CATEGORY_IDENTIFIER);
+            result = pocketRepository.save(noCategory);
+        } else {
+            result = pocket.get();
+        }
+        return result;
     }
 
     private Predicate<Pocket> isReasonContainingAnyKeywordsPocketPredicate(String reason) {
-        return pocket -> pocket.getKeywords().stream()
-                .anyMatch(keyword -> reason.toLowerCase().contains(keyword.toLowerCase()));
+        return pocket -> {
+            List<String> keywords = pocket.getKeywords();
+            return !CollectionUtils.isEmpty(keywords) && keywords.stream()
+                    .anyMatch(keyword -> reason.toLowerCase().contains(keyword.toLowerCase()));
+        };
     }
 }

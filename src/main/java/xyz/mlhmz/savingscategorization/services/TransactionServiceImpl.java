@@ -53,10 +53,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private void setPocketIntoTransaction(Transaction transaction) {
-        if (StringUtils.isNotEmpty(transaction.getReason())) {
-            Pocket pocket = pocketService.determinePocketByReason(transaction.getReason());
-            transaction.setPocket(pocket);
-        }
+        Pocket pocket = pocketService.determinePocketByReason(transaction.getReason());
+        transaction.setPocket(pocket);
     }
 
     private void recalculatePocketSumOnPocketInTransactionNotNull(Transaction result) {
