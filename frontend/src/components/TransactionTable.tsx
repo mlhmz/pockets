@@ -70,7 +70,7 @@ export const TransactionTable = () => {
                     {transaction.reason}
                   </TableCell>
                   <TableCell>{transaction.issuer}</TableCell>
-                  <TableCell>{transaction.localDate?.toTimeString()}</TableCell>
+                  <TableCell>{transaction.date}</TableCell>
                   <TableCell className="text-right">
                     <CurrencyDisplay value={transaction.amount ?? 0} />
                   </TableCell>

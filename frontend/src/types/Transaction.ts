@@ -2,7 +2,7 @@ export interface Transaction {
   id?: string;
   reason?: string;
   issuer?: string;
-  localDate?: Date;
+  date?: string;
   amount?: number;
   pocket?: TransactionPocket;
 }
