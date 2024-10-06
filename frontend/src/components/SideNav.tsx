@@ -1,5 +1,11 @@
 import { cn } from "@/lib/utils";
-import { ArrowLeftRight, EuroIcon, LayoutDashboard, X } from "lucide-react";
+import {
+  ArrowLeftRight,
+  EuroIcon,
+  LayoutDashboard,
+  Wallet,
+  X,
+} from "lucide-react";
 import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -44,7 +50,6 @@ export const SideNav = ({
         )}
       >
         <div className="flex justify-between items-center">
-          <h1 className="font-bold">Savings</h1>
           <Button
             onClick={() => setShowSideNav(!showSideNav)}
             variant="secondary"
@@ -52,6 +57,10 @@ export const SideNav = ({
           >
             <X />
           </Button>
+        </div>
+        <div className="flex flex-col items-center justify-center w-full py-5">
+          <Wallet size={52} />
+          <h1 className="font-bold text-xl">Savings</h1>
         </div>
         {links.map((link) => (
           <NavLink

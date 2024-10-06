@@ -39,7 +39,7 @@ export const TransactionTable = () => {
       <div className="self-start flex items-center gap-2">
         <Select onValueChange={setSelectedPocket}>
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Pocket" />
+            <SelectValue placeholder="Select a pocket..." />
           </SelectTrigger>
           <SelectContent>
             {pockets &&
