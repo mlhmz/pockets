@@ -1,8 +1,8 @@
 package xyz.mlhmz.savingscategorization.services;
 
-import io.micrometer.common.util.StringUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import xyz.mlhmz.savingscategorization.exceptions.EntityNotFoundException;
 import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 import xyz.mlhmz.savingscategorization.repositories.TransactionRepository;
@@ -32,6 +32,27 @@ public class TransactionServiceImpl implements TransactionService {
             recalculatePocketSumOnPocketInTransactionNotNull(result);
         }
         return result;
+    }
+
+    @Override
+    public List<Transaction> findAllTransactions() {
+        return transactionRepository.findAllByOrderByDateDesc();
+    }
+
+    @Override
+    public Transaction findTransactionById(String id) throws EntityNotFoundException {
+        Optional<Transaction> transaction = transactionRepository.findById(id);
+        return transaction.orElseThrow(EntityNotFoundException::new);
+    }
+
+    @Override
+    public List<Transaction> findTransactionsByPocket(UUID pocketUuid) {
+        return transactionRepository.findTransactionsByPocketUuidOrderByDateDesc(pocketUuid);
+    }
+
+    @Override
+    public void deleteTransactionById(String id) throws EntityNotFoundException {
+        transactionRepository.delete(findTransactionById(id));
     }
 
     /**
