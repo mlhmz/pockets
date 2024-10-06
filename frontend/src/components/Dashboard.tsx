@@ -1,5 +1,5 @@
 import { usePockets } from "@/hooks/use-pockets";
-import { Upload } from "lucide-react";
+import { DkbCsvUpload } from "./DkbCsvUpload";
 import { PocketEntry } from "./PocketEntry";
 import { CategoriesChart } from "./PocketsChart";
 
@@ -20,10 +20,7 @@ export const Dashboard = () => {
               <PocketEntry pocket={entry} />
             ))}
           </div>
-          <div className="flex flex-col bg-gray-100 rounded-md border border-border items-center justify-center min-h-32">
-            <Upload className="text-gray-400" width={36} height={36} />
-            <p className="text-gray-600">Upload DKB CSV</p>
-          </div>
+          <DkbCsvUpload />
         </div>
       </div>
     </div>
