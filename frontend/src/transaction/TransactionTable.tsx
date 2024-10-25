@@ -1,14 +1,14 @@
 import { useTransactions } from "@/hooks/use-transactions";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import { CurrencyDisplay } from "./CurrencyDisplay";
+import { CurrencyDisplay } from "../components/CurrencyDisplay";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../components/ui/select";
 import {
   Table,
   TableBody,
@@ -16,8 +16,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
-import { useQueryPockets } from "@/hooks/use-query-pockets";
+} from "../components/ui/table";
+import { useQueryPockets } from "@/pocket/hooks/use-query-pockets";
 
 export const TransactionTable = () => {
   const [selectedPocket, setSelectedPocket] = useState<string>();

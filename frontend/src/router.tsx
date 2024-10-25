@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { Dashboard } from "./components/Dashboard";
 import { Layout } from "./components/Layout";
 import { NotFound } from "./components/NotFound";
-import { TransactionTable } from "./components/TransactionTable";
+import { TransactionTable } from "./transaction/TransactionTable";
 
 export const router = createBrowserRouter([
   {
