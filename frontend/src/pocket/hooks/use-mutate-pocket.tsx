@@ -5,6 +5,9 @@ async function createPocket(pocket: Pocket) {
   const result = await fetch("/api/v1/pockets", {
     method: "POST",
     body: JSON.stringify(pocket),
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
   const data = await result.json();
   return data as Pocket;

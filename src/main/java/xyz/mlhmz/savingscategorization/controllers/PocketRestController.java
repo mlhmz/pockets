@@ -1,6 +1,7 @@
 package xyz.mlhmz.savingscategorization.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.mlhmz.savingscategorization.dtos.MutatePocketDto;
@@ -22,6 +23,7 @@ public class PocketRestController {
     private final PocketMapper pocketMapper;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public QueryPocketDto createPocket(@RequestBody MutatePocketDto mutatePocketDto) throws EntityAlreadyExistsException {
         Pocket pocket = pocketMapper.mapMutatePocketToPocket(mutatePocketDto);
         return pocketMapper.mapPocketToQueryPocket(pocketService.createPocket(pocket));
