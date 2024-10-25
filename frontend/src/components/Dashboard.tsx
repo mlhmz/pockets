@@ -1,10 +1,10 @@
-import { usePockets } from "@/hooks/use-pockets";
+import { useQueryPockets } from "@/hooks/use-query-pockets";
 import { DkbCsvUpload } from "./DkbCsvUpload";
 import { PocketEntry } from "./PocketEntry";
 import { CategoriesChart } from "./PocketsChart";
 
 export const Dashboard = () => {
-  const { data } = usePockets();
+  const { data } = useQueryPockets();
 
   return (
     <div>

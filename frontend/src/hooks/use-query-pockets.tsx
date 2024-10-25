@@ -7,7 +7,7 @@ async function fetchPockets() {
   return data as Pockets;
 }
 
-export const usePockets = () => {
+export const useQueryPockets = () => {
   return useQuery({
     queryKey: ["pockets"],
     queryFn: () => fetchPockets(),

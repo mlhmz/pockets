@@ -1,4 +1,3 @@
-import { usePockets } from "@/hooks/use-pockets";
 import { useTransactions } from "@/hooks/use-transactions";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -18,10 +17,11 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { useQueryPockets } from "@/hooks/use-query-pockets";
 
 export const TransactionTable = () => {
   const [selectedPocket, setSelectedPocket] = useState<string>();
-  const { data: pockets } = usePockets();
+  const { data: pockets } = useQueryPockets();
   const { data, isLoading } = useTransactions(selectedPocket);
 
   console.log(data);
