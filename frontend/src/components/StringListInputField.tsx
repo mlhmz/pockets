@@ -17,9 +17,36 @@ export const StringListInputField = ({
 }) => {
   const [keyword, setKeyword] = useState("");
 
+  const listIncludesIgnoreCase = (entry: string) => {
+    return (
+      value.filter(
+        (listValue) => listValue.toLowerCase() === entry.toLowerCase()
+      ).length === 0
+    );
+  };
+
   return (
-    <div>
-      <label htmlFor="keywords">Keywords</label>
+    <div className="flex flex-col gap-3">
+      <div className="px-3 py-1 rounded-lg border flex justify-between items-center">
+        <ul className="flex gap-2 py-2 flex-wrap flex-grow min-h-10">
+          {value.map((keywordEntry) => (
+            <Badge
+              className="flex justify-center items-center gap-1 hover:bg-red-500 cursor-pointer"
+              onClick={() =>
+                onChange(value.filter((entry) => entry !== keywordEntry))
+              }
+            >
+              {keywordEntry}{" "}
+              <span>
+                <X width={16} height={16} />
+              </span>
+            </Badge>
+          ))}
+        </ul>
+        <p className="flex-shrink text-gray-400">
+          {value.length !== 0 ? value.length : "Empty"}
+        </p>
+      </div>
       <div className="flex gap-2">
         <Input
           id={id}
@@ -30,28 +57,13 @@ export const StringListInputField = ({
         <Button
           onClick={() =>
             !!keyword &&
-            !value.includes(keyword) &&
+            listIncludesIgnoreCase(keyword) &&
             onChange([...value, keyword])
           }
         >
           Add
         </Button>
       </div>
-      <ul className="flex gap-2 py-2 flex-wrap">
-        {value.map((keywordEntry) => (
-          <Badge>
-            {keywordEntry}{" "}
-            <span
-              className="cursor-pointer"
-              onClick={() =>
-                onChange(value.filter((entry) => entry !== keywordEntry))
-              }
-            >
-              <X />
-            </span>
-          </Badge>
-        ))}
-      </ul>
     </div>
   );
 };

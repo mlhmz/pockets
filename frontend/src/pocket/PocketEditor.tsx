@@ -49,6 +49,7 @@ export const PocketEditor = () => {
         {renderFieldError("description")}
       </div>
       <div className="w-full">
+        <label htmlFor="keywords">Keywords</label>
         <Controller
           name="keywords"
           control={control}

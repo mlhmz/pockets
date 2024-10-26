@@ -46,7 +46,7 @@ export const SideNav = ({
       <div
         className={cn(
           "fixed bg-white min-w-[220px] md:static flex flex-shrink flex-col gap-3 p-5 h-screen z-10 border-r border-r-border shadow transition-all ease-in-out duration-300",
-          showSideNav ? "left-0" : "left-[-50%]"
+          showSideNav ? "left-0" : "left-[-80%]"
         )}
       >
         <div className="flex justify-between items-center">
