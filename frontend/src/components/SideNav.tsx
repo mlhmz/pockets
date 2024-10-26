@@ -27,11 +27,6 @@ const links: Link[] = [
     text: "Transactions",
     href: "/transactions",
   },
-  {
-    icon: <EuroIcon />,
-    text: "Pockets",
-    href: "/pockets",
-  },
 ];
 
 export const SideNav = ({

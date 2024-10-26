@@ -33,6 +33,7 @@ public class PocketServiceImpl implements PocketService {
     public Pocket updatePocket(Pocket target, Pocket payload) {
         target.setName(payload.getName());
         target.setDescription(payload.getDescription());
+        target.setIdentifier(payload.getIdentifier());
         target.setIconName(payload.getIconName());
         target.setKeywords(payload.getKeywords());
         return pocketRepository.save(target);

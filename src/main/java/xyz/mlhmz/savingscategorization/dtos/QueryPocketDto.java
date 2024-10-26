@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public record QueryPocketDto(
         UUID uuid,
+        String identifier,
         String name,
         String description,
         List<String> keywords,

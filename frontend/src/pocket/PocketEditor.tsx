@@ -2,17 +2,21 @@ import { StringListInputField } from "@/components/StringListInputField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { PocketMutation } from "@/types/Pocket";
+import { Pocket, PocketMutation } from "@/types/Pocket";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { useMutatePocket } from "./hooks/use-mutate-pocket";
 
-export const PocketEditor = () => {
+export const PocketEditor = ({ pocket }: { pocket?: Pocket }) => {
   const { register, handleSubmit, control, formState } =
     useForm<PocketMutation>({
       resolver: zodResolver(PocketMutation),
       defaultValues: {
-        keywords: [],
+        uuid: pocket?.uuid,
+        description: pocket?.description,
+        identifier: pocket?.identifier,
+        name: pocket?.name,
+        keywords: pocket?.keywords ?? [],
       },
     });
   const { mutate } = useMutatePocket();
@@ -31,7 +35,7 @@ export const PocketEditor = () => {
       onSubmit={(e) => {
         e.preventDefault();
       }}
-      className="flex flex-col gap-5 items-center w-[80vw] m-auto p-1"
+      className="flex flex-col gap-5 items-center m-auto w-full"
     >
       <div className="w-full">
         <label htmlFor="identifier">Identifier</label>

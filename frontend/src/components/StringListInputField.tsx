@@ -60,6 +60,7 @@ export const StringListInputField = ({
             listIncludesIgnoreCase(keyword) &&
             onChange([...value, keyword])
           }
+          variant="outline"
         >
           Add
         </Button>

@@ -11,6 +11,7 @@ export interface Pocket {
 }
 
 export const PocketMutation = z.object({
+  uuid: z.string().uuid().optional(),
   name: z.string(),
   identifier: z.string(),
   description: z.string().optional(),

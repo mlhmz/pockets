@@ -18,13 +18,22 @@ import {
   TableRow,
 } from "../components/ui/table";
 import { useQueryPockets } from "@/pocket/hooks/use-query-pockets";
+import { FromNow } from "@/components/FromNow";
+import {
+  Tooltip,
+  TooltipProvider,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useParams } from "react-router-dom";
 
 export const TransactionTable = () => {
-  const [selectedPocket, setSelectedPocket] = useState<string>();
+  const { uuid } = useParams();
+  const [selectedPocket, setSelectedPocket] = useState<string | undefined>(
+    uuid ?? undefined
+  );
   const { data: pockets } = useQueryPockets();
   const { data, isLoading } = useTransactions(selectedPocket);
-
-  console.log(data);
 
   if (isLoading) {
     return (
@@ -37,7 +46,7 @@ export const TransactionTable = () => {
     <div className="flex flex-col justify-center items-center m-5 gap-3">
       <h1 className="self-start font-bold text-2xl">Transactions</h1>
       <div className="self-start flex items-center gap-2">
-        <Select onValueChange={setSelectedPocket}>
+        <Select value={selectedPocket} onValueChange={setSelectedPocket}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a pocket..." />
           </SelectTrigger>
@@ -70,7 +79,16 @@ export const TransactionTable = () => {
                     {transaction.reason}
                   </TableCell>
                   <TableCell>{transaction.issuer}</TableCell>
-                  <TableCell>{transaction.date}</TableCell>
+                  <TableCell>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <FromNow date={transaction.date} />
+                        </TooltipTrigger>
+                        <TooltipContent>{transaction.date}</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </TableCell>
                   <TableCell className="text-right">
                     <CurrencyDisplay value={transaction.amount ?? 0} />
                   </TableCell>
