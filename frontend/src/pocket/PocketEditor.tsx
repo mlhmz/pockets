@@ -7,7 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { useMutatePocket } from "./hooks/use-mutate-pocket";
 
-export const PocketEditor = ({ pocket }: { pocket?: Pocket }) => {
+export const PocketEditor = ({
+  pocket,
+  onSuccess,
+}: {
+  pocket?: Pocket;
+  onSuccess: () => void;
+}) => {
   const { register, handleSubmit, control, formState } =
     useForm<PocketMutation>({
       resolver: zodResolver(PocketMutation),
@@ -22,7 +28,7 @@ export const PocketEditor = ({ pocket }: { pocket?: Pocket }) => {
   const { mutate } = useMutatePocket();
 
   const onSubmit = (data: PocketMutation) => {
-    mutate(data);
+    mutate(data, { onSuccess: onSuccess });
   };
 
   const renderFieldError = (value: keyof PocketMutation) => {

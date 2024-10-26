@@ -14,9 +14,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CurrencyDisplay } from "../components/CurrencyDisplay";
 import { PocketEditorDialog } from "./PocketEditorDialog";
+import { useMutateDeletePocket } from "./hooks/use-mutate-delete-pocket";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export const PocketEntry = ({ pocket }: { pocket?: Pocket }) => {
   const { data } = useTransactions(pocket?.uuid);
+  const { mutate: mutateDelete } = useMutateDeletePocket();
+  const queryClient = useQueryClient();
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -49,6 +54,7 @@ export const PocketEntry = ({ pocket }: { pocket?: Pocket }) => {
                       <Button
                         variant="ghost"
                         className="flex gap-1 hover:bg-red-50"
+                        onClick={() => mutateDelete(pocket)}
                       >
                         <CircleX />
                       </Button>

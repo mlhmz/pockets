@@ -20,7 +20,7 @@ export const PocketEditorDialog = ({ pocket }: { pocket?: Pocket }) => {
               {pocket ? "Update" : "Create"} Pocket
             </h1>
           </DialogHeader>
-          <PocketEditor pocket={pocket} />
+          <PocketEditor pocket={pocket} onSuccess={() => setOpen(false)} />
         </DialogContent>
       </Dialog>
     </>
