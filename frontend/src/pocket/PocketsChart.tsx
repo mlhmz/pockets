@@ -30,7 +30,7 @@ export const CategoriesChart = ({ data }: { data: Pockets }) => {
   };
 
   return (
-    <Card className="flex flex-col my-2 py-1">
+    <Card className="flex flex-col py-1">
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}

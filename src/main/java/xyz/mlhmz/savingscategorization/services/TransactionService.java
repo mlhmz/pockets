@@ -1,5 +1,8 @@
 package xyz.mlhmz.savingscategorization.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import xyz.mlhmz.savingscategorization.exceptions.EntityNotFoundException;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 
@@ -11,11 +14,11 @@ public interface TransactionService {
 
     Transaction createTransaction(Transaction transaction);
 
-    List<Transaction> findAllTransactions();
+    Page<Transaction> findAllTransactions(Pageable pageable);
 
     Transaction findTransactionById(String id) throws EntityNotFoundException;
 
-    List<Transaction> findTransactionsByPocket(UUID pocketUuid);
+    Page<Transaction> findTransactionsByPocket(Pageable pageable, UUID pocketUuid);
 
     void deleteTransactionById(String id) throws EntityNotFoundException;
 }

@@ -1,5 +1,6 @@
 import { FromNow } from "@/components/FromNow";
 import { Button } from "@/components/ui/button";
+import { Table, TableCell, TableRow } from "@/components/ui/table";
 import {
   Tooltip,
   TooltipContent,
@@ -7,7 +8,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useTransactions } from "@/hooks/use-transactions";
-import { cn } from "@/lib/utils";
 import { Pocket } from "@/types/Pocket";
 import { ChevronDown, ChevronRight, CircleX } from "lucide-react";
 import { useState } from "react";
@@ -15,18 +15,22 @@ import { Link } from "react-router-dom";
 import { CurrencyDisplay } from "../components/CurrencyDisplay";
 import { PocketEditorDialog } from "./PocketEditorDialog";
 import { useMutateDeletePocket } from "./hooks/use-mutate-delete-pocket";
-import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export const PocketEntry = ({ pocket }: { pocket?: Pocket }) => {
-  const { data } = useTransactions(pocket?.uuid);
+  const { data, error } = useTransactions(pocket?.uuid, {
+    page: 0,
+    size: 5,
+  });
   const { mutate: mutateDelete } = useMutateDeletePocket();
-  const queryClient = useQueryClient();
   const [expanded, setExpanded] = useState(false);
 
+  if (error) {
+    toast.error(error.message);
+  }
   return (
     <>
-      <div className="p-3 border-b border-b-border transition-all">
+      <div className="p-3 transition-all">
         <div
           onClick={() => setExpanded(!expanded)}
           className="flex items-center cursor-pointer"
@@ -66,26 +70,26 @@ export const PocketEntry = ({ pocket }: { pocket?: Pocket }) => {
             </div>
 
             <div>
-              {data?.slice(0, 5).map((entry, index) => (
-                /** TODO: Max Fetch Size in API */
-                <div
-                  className={cn(
-                    "flex justify-between py-2 px-2",
-                    index !== 0 && "border-t"
-                  )}
-                >
-                  <div className="flex gap-2 items-center">
-                    <p className="overflow-hidden text-nowrap max-w-[450px]">
-                      {entry.reason?.substring(0, 45)}
-                      {(entry.reason?.length ?? 0) >= 45 && "..."}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      <FromNow date={entry.date} />
-                    </p>
-                  </div>
-                  <CurrencyDisplay value={entry.amount ?? 0} />
-                </div>
-              ))}
+              <Table className="w-full">
+                {data?.content?.map((entry) => (
+                  <TableRow>
+                    <TableCell>
+                      <p className="overflow-hidden text-nowrap max-w-[450px]">
+                        {entry.reason?.substring(0, 45)}
+                        {(entry.reason?.length ?? 0) >= 45 && "..."}
+                      </p>
+                    </TableCell>
+                    <TableCell>
+                      <p className="text-xs text-gray-500">
+                        <FromNow date={entry.date} />
+                      </p>
+                    </TableCell>
+                    <TableCell>
+                      <CurrencyDisplay value={entry.amount ?? 0} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </Table>
             </div>
             <Link to={"/transactions/" + pocket?.uuid}>
               <Button variant="ghost" className="mt-1 w-full">

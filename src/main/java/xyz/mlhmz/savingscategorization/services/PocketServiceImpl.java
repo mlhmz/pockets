@@ -2,6 +2,8 @@ package xyz.mlhmz.savingscategorization.services;
 
 import io.micrometer.common.util.StringUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import xyz.mlhmz.savingscategorization.exceptions.EntityAlreadyExistsException;
@@ -48,6 +50,11 @@ public class PocketServiceImpl implements PocketService {
     @Override
     public List<Pocket> findAllPockets() {
         return pocketRepository.findAll();
+    }
+
+    @Override
+    public Page<Pocket> findAllPockets(Pageable pageable) {
+        return pocketRepository.findAll(pageable);
     }
 
     @Override

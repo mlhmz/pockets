@@ -1,11 +1,5 @@
 import { cn } from "@/lib/utils";
-import {
-  ArrowLeftRight,
-  EuroIcon,
-  LayoutDashboard,
-  Wallet,
-  X,
-} from "lucide-react";
+import { ArrowLeftRight, LayoutDashboard, Wallet, X } from "lucide-react";
 import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -40,7 +34,7 @@ export const SideNav = ({
     <div>
       <div
         className={cn(
-          "fixed bg-white min-w-[220px] md:static flex flex-shrink flex-col gap-3 p-5 h-screen z-10 border-r border-r-border shadow transition-all ease-in-out duration-300",
+          "fixed bg-white min-w-[220px] md:static flex flex-shrink flex-col gap-3 p-5 h-screen z-10 border-r border-r-border shadow-sm transition-all ease-in-out duration-300",
           showSideNav ? "left-0" : "left-[-80%]"
         )}
       >

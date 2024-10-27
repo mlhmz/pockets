@@ -1,6 +1,8 @@
 package xyz.mlhmz.savingscategorization.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import xyz.mlhmz.savingscategorization.exceptions.EntityNotFoundException;
 import xyz.mlhmz.savingscategorization.models.Pocket;
@@ -35,8 +37,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> findAllTransactions() {
-        return transactionRepository.findAllByOrderByDateDesc();
+    public Page<Transaction> findAllTransactions(Pageable pageable) {
+        return transactionRepository.findAllByOrderByDateDesc(pageable);
     }
 
     @Override
@@ -46,8 +48,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> findTransactionsByPocket(UUID pocketUuid) {
-        return transactionRepository.findTransactionsByPocketUuidOrderByDateDesc(pocketUuid);
+    public Page<Transaction> findTransactionsByPocket(Pageable pageable, UUID pocketUuid) {
+        return transactionRepository.findTransactionsByPocketUuidOrderByDateDesc(pageable, pocketUuid);
     }
 
     @Override

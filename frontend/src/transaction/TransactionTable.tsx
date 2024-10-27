@@ -1,6 +1,25 @@
+import { FromNow } from "@/components/FromNow";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { usePageable } from "@/hooks/use-pageable";
 import { useTransactions } from "@/hooks/use-transactions";
+import { useQueryPockets } from "@/pocket/hooks/use-query-pockets";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { CurrencyDisplay } from "../components/CurrencyDisplay";
 import {
   Select,
@@ -17,15 +36,6 @@ import {
   TableHeader,
   TableRow,
 } from "../components/ui/table";
-import { useQueryPockets } from "@/pocket/hooks/use-query-pockets";
-import { FromNow } from "@/components/FromNow";
-import {
-  Tooltip,
-  TooltipProvider,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useParams } from "react-router-dom";
 
 export const TransactionTable = () => {
   const { uuid } = useParams();
@@ -33,7 +43,20 @@ export const TransactionTable = () => {
     uuid ?? undefined
   );
   const { data: pockets } = useQueryPockets();
-  const { data, isLoading } = useTransactions(selectedPocket);
+  const [totalPages, setTotalPages] = useState(1);
+  const { pageable, pageNumber, previousPage, nextPage, reset } = usePageable({
+    defaultPageable: {
+      size: 20,
+      page: 0,
+    },
+    totalPages: totalPages,
+  });
+  const { data, isLoading } = useTransactions(selectedPocket, pageable);
+
+  // todo: weird, find a better way, of binding the total pages from the spring request.
+  useEffect(() => {
+    setTotalPages(data?.page.totalPages ?? 1);
+  }, [data]);
 
   if (isLoading) {
     return (
@@ -46,7 +69,13 @@ export const TransactionTable = () => {
     <div className="flex flex-col justify-center items-center m-5 gap-3">
       <h1 className="self-start font-bold text-2xl">Transactions</h1>
       <div className="self-start flex items-center gap-2">
-        <Select value={selectedPocket} onValueChange={setSelectedPocket}>
+        <Select
+          value={selectedPocket}
+          onValueChange={(pocket) => {
+            setSelectedPocket(pocket);
+            reset();
+          }}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select a pocket..." />
           </SelectTrigger>
@@ -61,7 +90,7 @@ export const TransactionTable = () => {
           </SelectContent>
         </Select>
       </div>
-      <div className="border border-border shadow rounded-md overflow-y-scroll max-h-[80vh] w-full">
+      <div className="border border-border shadow rounded-md overflow-y-scroll h-[70vh] w-full bg-gray-100">
         <Table>
           <TableHeader className="sticky top-0 bg-background">
             <TableRow>
@@ -73,8 +102,8 @@ export const TransactionTable = () => {
           </TableHeader>
           <TableBody>
             {data &&
-              data?.map((transaction) => (
-                <TableRow key={transaction.id}>
+              data?.content?.map((transaction) => (
+                <TableRow key={transaction.id} className="bg-background">
                   <TableCell className="text-nowrap overflow-hidden max-w-[150px]">
                     {transaction.reason}
                   </TableCell>
@@ -97,6 +126,28 @@ export const TransactionTable = () => {
           </TableBody>
         </Table>
       </div>
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              className="cursor-pointer"
+              onClick={() => previousPage()}
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink>{pageNumber}</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext
+              className="cursor-pointer"
+              onClick={() => nextPage()}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 };

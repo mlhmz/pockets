@@ -1,4 +1,5 @@
-import { Transactions } from "@/types/Transaction";
+import { Pageable, PagedModel, mapPageableToSearchParams } from "@/types/Page";
+import { Transaction } from "@/types/Transaction";
 import { useQuery } from "@tanstack/react-query";
 
 function getTransactionUrl(pocketUuid?: string) {
@@ -7,15 +8,18 @@ function getTransactionUrl(pocketUuid?: string) {
     : "/api/v1/transactions";
 }
 
-async function fetchTransactions(pocketUuid?: string) {
-  const result = await fetch(getTransactionUrl(pocketUuid));
+async function fetchTransactions(pocketUuid?: string, pageable?: Pageable) {
+  const result = await fetch(
+    getTransactionUrl(pocketUuid) +
+      (pageable ? `?${mapPageableToSearchParams(pageable)}` : "")
+  );
   const data = await result.json();
-  return data as Transactions;
+  return data as PagedModel<Transaction>;
 }
 
-export const useTransactions = (pocketUuid?: string) => {
+export const useTransactions = (pocketUuid?: string, pageable?: Pageable) => {
   return useQuery({
-    queryKey: ["transactions", pocketUuid],
-    queryFn: () => fetchTransactions(pocketUuid),
+    queryKey: ["transactions", pocketUuid, pageable],
+    queryFn: () => fetchTransactions(pocketUuid, pageable),
   });
 };
