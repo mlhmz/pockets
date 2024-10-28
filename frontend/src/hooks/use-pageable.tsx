@@ -1,5 +1,6 @@
 import { Pageable } from "@/types/Page";
 import { useMemo, useState } from "react";
+import { useNextPages } from "./use-next-pages";
 
 export const usePageable = ({
   defaultPageable,
@@ -8,13 +9,12 @@ export const usePageable = ({
   defaultPageable?: Pageable;
   totalPages?: number;
 }) => {
-  const [pageable, setPageable] = useState<Pageable | undefined>(
-    defaultPageable
+  const [pageable, setPageable] = useState<Pageable>(
+    defaultPageable ?? ({} as Pageable)
   );
-  const pageNumber = useMemo(() => {
-    const pageNumber = pageable?.page ?? 0;
-    return pageNumber + 1;
-  }, [pageable]);
+  const currentPage = useMemo(() => pageable?.page ?? 1, [pageable]);
+  const maxPages = useMemo(() => totalPages ?? 1, [totalPages]);
+  const nextPages = useNextPages(currentPage, maxPages);
 
   const previousPage = () =>
     setPageable((old) => {
@@ -30,19 +30,29 @@ export const usePageable = ({
   const nextPage = () =>
     setPageable((old) => {
       if (totalPages === undefined || totalPages === 1) {
-        return;
+        return {};
       }
       const maxValue = totalPages - 1;
-      console.log("max value", maxValue);
-      const oldPageValue = old?.page ?? 0;
-      console.log("old value", oldPageValue);
+      const oldPageValue = old.page ?? 0;
       const newPageValue = Math.min(oldPageValue + 1, maxValue);
-      console.log("new value", newPageValue);
 
       return { ...old, page: newPageValue };
     });
 
-  const reset = () => setPageable(defaultPageable);
+  const setPage = (value: number) =>
+    setPageable((old) => {
+      return { ...old, page: value };
+    });
 
-  return { pageable, pageNumber, setPageable, previousPage, nextPage, reset };
+  const reset = () => setPageable(defaultPageable ?? {});
+
+  return {
+    pageable,
+    setPageable,
+    previousPage,
+    nextPage,
+    reset,
+    nextPages,
+    setPage,
+  };
 };

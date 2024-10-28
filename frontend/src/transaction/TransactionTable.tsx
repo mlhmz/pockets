@@ -36,6 +36,7 @@ import {
   TableHeader,
   TableRow,
 } from "../components/ui/table";
+import { cn } from "@/lib/utils";
 
 export const TransactionTable = () => {
   const { uuid } = useParams();
@@ -44,13 +45,14 @@ export const TransactionTable = () => {
   );
   const { data: pockets } = useQueryPockets();
   const [totalPages, setTotalPages] = useState(1);
-  const { pageable, pageNumber, previousPage, nextPage, reset } = usePageable({
-    defaultPageable: {
-      size: 20,
-      page: 0,
-    },
-    totalPages: totalPages,
-  });
+  const { pageable, previousPage, nextPage, nextPages, setPage, reset } =
+    usePageable({
+      defaultPageable: {
+        size: 20,
+        page: 0,
+      },
+      totalPages: totalPages,
+    });
   const { data, isLoading } = useTransactions(selectedPocket, pageable);
 
   // todo: weird, find a better way, of binding the total pages from the spring request.
@@ -134,12 +136,18 @@ export const TransactionTable = () => {
               onClick={() => previousPage()}
             />
           </PaginationItem>
-          <PaginationItem>
-            <PaginationLink>{pageNumber}</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
+          {nextPages.map((value) => (
+            <PaginationItem
+              className={cn(
+                value.current && "border rounded-md shadow-sm",
+                "cursor-pointer"
+              )}
+            >
+              <PaginationLink onClick={() => setPage(value.index)}>
+                {value.index + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
           <PaginationItem>
             <PaginationNext
               className="cursor-pointer"
