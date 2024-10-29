@@ -24,4 +24,6 @@ public interface TransactionService {
     Transaction updateTransaction(String transactionId, Transaction payload, @Nullable UUID pocketUUID) throws EntityNotFoundException;
 
     void deleteTransactionById(String id) throws EntityNotFoundException;
+
+    List<Transaction> redetermineAllPocketsOfTransactions();
 }

@@ -94,6 +94,43 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
+    /**
+     * When pockets are created, modified or deleted, this can cause transactions to match to criteria of other pockets.
+     * This is why this method is existing, redetermine all Pockets of Transactions.
+     * <p/>
+     * <b>WARNING: This operation can be very expensive because all pockets and all transactions of the application
+     * are being processed.</b>
+     */
+    @Override
+    @Transactional
+    public List<Transaction> redetermineAllPocketsOfTransactions() {
+        List<Transaction> transactions = transactionRepository.findAll();
+        List<Transaction> modifiedTransactions = new ArrayList<>();
+        Set<Pocket> oldPockets = new HashSet<>();
+        for (Transaction transaction : transactions) {
+            Pocket oldPocket = transaction.getPocket();
+            Pocket newPocket = pocketService.determinePocketByReason(transaction.getReason());
+
+            if (!transaction.isPocketForced() && isOldPocketNullOrUnequalToNewPocket(oldPocket, newPocket)) {
+                transaction.setPocket(newPocket);
+                Transaction savedTransaction = transactionRepository.save(transaction);
+                modifiedTransactions.add(savedTransaction);
+                if (oldPocket != null) {
+                    entityManager.refresh(oldPocket);
+                    oldPockets.add(oldPocket);
+                }
+            }
+        }
+
+        oldPockets.forEach(pocketService::recalculatePocketSum);
+        recalculateAllAffectedPockets(modifiedTransactions);
+        return modifiedTransactions;
+    }
+
+    private boolean isOldPocketNullOrUnequalToNewPocket(Pocket oldPocket, Pocket newPocket) {
+        return oldPocket == null || (oldPocket.getUuid() != newPocket.getUuid());
+    }
+
     private void recalculateAllAffectedPockets(List<Transaction> result) {
         Map<UUID, Pocket> pocketMap = new HashMap<>();
         result.stream().map(Transaction::getPocket).filter(Objects::nonNull).forEach(pocket -> pocketMap.put(pocket.getUuid(), pocket));

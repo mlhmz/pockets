@@ -14,6 +14,7 @@ import xyz.mlhmz.savingscategorization.mappers.TransactionMapper;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 import xyz.mlhmz.savingscategorization.services.TransactionService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -56,6 +57,12 @@ public class TransactionsRestController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/actions/redetermineAllPocketsOfTransactions")
+    public List<QueryTransactionDto> redetermineAllPocketsOfTransactions() {
+        List<Transaction> transactions = transactionService.redetermineAllPocketsOfTransactions();
+        return transactions.stream().map(transactionMapper::mapTransactionToQueryTransaction).toList();
     }
 
     @DeleteMapping

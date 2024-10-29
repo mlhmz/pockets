@@ -3,9 +3,14 @@ import { PocketEntries } from "@/pocket/PocketEntries";
 import { useQueryPockets } from "@/pocket/hooks/use-query-pockets";
 import { CategoriesChart } from "../pocket/PocketsChart";
 import { DkbCsvUpload } from "./DkbCsvUpload";
+import { Button } from "./ui/button";
+import { useRedetermineAllPocketsOfTransactions } from "@/transaction/hooks/use-redetermine-all-pockets-of-transactions";
+import { toast } from "sonner";
 
 export const Dashboard = () => {
   const { data } = useQueryPockets();
+  const { mutateAsync: executeAction } =
+    useRedetermineAllPocketsOfTransactions();
 
   return (
     <div>
@@ -24,7 +29,22 @@ export const Dashboard = () => {
             <h2 className="text-lg font-bold">Categories</h2>
             <PocketEditorDialog />
           </div>
-          <PocketEntries data={data} />
+          <div className="flex flex-col gap-2">
+            <PocketEntries data={data} />
+            <Button
+              onClick={() =>
+                toast.promise(executeAction(), {
+                  loading: "Loading...",
+                  success: (data) => {
+                    return `${data.length} were assigned to other pockets.`;
+                  },
+                })
+              }
+              className="w-full"
+            >
+              Redetermine all
+            </Button>
+          </div>
         </div>
       </div>
     </div>
