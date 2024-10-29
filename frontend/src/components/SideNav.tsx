@@ -34,7 +34,7 @@ export const SideNav = ({
     <div>
       <div
         className={cn(
-          "fixed bg-white min-w-[220px] md:static flex flex-shrink flex-col gap-3 p-5 h-screen z-10 border-r border-r-border shadow-sm transition-all ease-in-out duration-300",
+          "fixed bg-accent text-secondary-foreground min-w-[220px] md:static flex flex-shrink flex-col gap-3 p-5 h-screen z-10 border-r border-r-border shadow-sm transition-all ease-in-out duration-300",
           showSideNav ? "left-0" : "left-[-80%]"
         )}
       >
@@ -47,9 +47,9 @@ export const SideNav = ({
             <X />
           </Button>
         </div>
-        <div className="flex flex-col items-center justify-center w-full py-5">
-          <Wallet size={52} />
-          <h1 className="font-bold text-xl">Savings</h1>
+        <div className="flex flex-col items-center justify-center font-bold w-full py-5">
+          <Wallet size={52} className="text-secondary-foreground" />
+          <h1 className="text-xl">Savings</h1>
         </div>
         {links.map((link) => (
           <NavLink
@@ -57,7 +57,7 @@ export const SideNav = ({
             to={link.href}
           >
             <Button
-              className="flex justify-start items-center gap-1 font-bold w-full hover:text-primary"
+              className="flex justify-start items-center gap-1 w-full hover:text-primary"
               variant={"ghost"}
             >
               {link.icon}

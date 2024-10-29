@@ -8,6 +8,9 @@ public record QueryTransactionDto(
         String issuer,
         LocalDate date,
         double amount,
+        boolean hideForced,
+        boolean pocketForced,
+        String forceReason,
         QueryTransactionPocketDto pocket
 ) {
 }

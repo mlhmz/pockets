@@ -30,6 +30,14 @@ public class Transaction {
         inverseJoinColumns = {@JoinColumn(name = "pocket_uuid", referencedColumnName = "uuid")})
     private Pocket pocket;
 
+    private boolean pocketForced;
+
+    private boolean hideForced;
+
+    @Column(columnDefinition = "TEXT")
+    private String forceReason;
+
+
     public Transaction(String id, String reason, String issuer, LocalDate date, double amount) {
         this.id = id;
         this.reason = reason;

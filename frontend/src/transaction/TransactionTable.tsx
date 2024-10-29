@@ -2,7 +2,6 @@ import { FromNow } from "@/components/FromNow";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -37,6 +36,7 @@ import {
   TableRow,
 } from "../components/ui/table";
 import { cn } from "@/lib/utils";
+import { TransactionEditorDialog } from "./TransactionEditorDialog";
 
 export const TransactionTable = () => {
   const { uuid } = useParams();
@@ -92,7 +92,7 @@ export const TransactionTable = () => {
           </SelectContent>
         </Select>
       </div>
-      <div className="border border-border shadow rounded-md overflow-y-scroll h-[70vh] w-full bg-gray-100">
+      <div className="border border-border shadow-sm rounded-md overflow-y-scroll h-[70vh] w-full bg-gray-100">
         <Table>
           <TableHeader className="sticky top-0 bg-background">
             <TableRow>
@@ -100,6 +100,7 @@ export const TransactionTable = () => {
               <TableHead>Issuer</TableHead>
               <TableHead>Date</TableHead>
               <TableHead className="text-right">Amount</TableHead>
+              <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -122,6 +123,9 @@ export const TransactionTable = () => {
                   </TableCell>
                   <TableCell className="text-right">
                     <CurrencyDisplay value={transaction.amount ?? 0} />
+                  </TableCell>
+                  <TableCell className="w-[100px]">
+                    <TransactionEditorDialog transaction={transaction} />
                   </TableCell>
                 </TableRow>
               ))}

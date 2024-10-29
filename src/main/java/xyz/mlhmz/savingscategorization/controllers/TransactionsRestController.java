@@ -7,6 +7,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import xyz.mlhmz.savingscategorization.dtos.MutateTransactionDto;
 import xyz.mlhmz.savingscategorization.dtos.QueryTransactionDto;
 import xyz.mlhmz.savingscategorization.exceptions.EntityNotFoundException;
 import xyz.mlhmz.savingscategorization.mappers.TransactionMapper;
@@ -44,6 +45,17 @@ public class TransactionsRestController {
         Page<QueryTransactionDto> transactions = transactionService.findTransactionsByPocket(pageable, pocketUuid)
                 .map(transactionMapper::mapTransactionToQueryTransaction);
         return new PagedModel<>(transactions);
+    }
+
+    @PutMapping("/{transactionId}")
+    public ResponseEntity<QueryTransactionDto> updateTransaction(@PathVariable String transactionId, @RequestBody MutateTransactionDto mutateTransaction) {
+        Transaction payload = mutateTransaction.toTransaction();
+        try {
+            Transaction transaction = transactionService.updateTransaction(transactionId, payload, mutateTransaction.pocketUuid());
+            return ResponseEntity.ok(transactionMapper.mapTransactionToQueryTransaction(transaction));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping

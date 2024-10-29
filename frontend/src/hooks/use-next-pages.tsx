@@ -17,7 +17,6 @@ export const useNextPages = (currentPage: number, maxPages: number) => {
 
   const addPagesAfterCurrentPage = useCallback(
     (nextPages: PageSchema[]) => {
-      // Füge die 2 Seiten nach der aktuellen Seite hinzu, wenn möglich
       for (
         let i = currentPage + 1;
         i <= Math.min(currentPage + 2, maxPages - 1);

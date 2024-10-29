@@ -1,9 +1,12 @@
 package xyz.mlhmz.savingscategorization.services;
 
+import jakarta.annotation.Nullable;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.mlhmz.savingscategorization.exceptions.EntityNotFoundException;
 import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.models.Transaction;
@@ -16,6 +19,7 @@ import java.util.*;
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final PocketService pocketService;
+    private final EntityManager entityManager;
 
     @Override
     public List<Transaction> createTransactions(List<Transaction> transactions) {
@@ -50,6 +54,27 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Page<Transaction> findTransactionsByPocket(Pageable pageable, UUID pocketUuid) {
         return transactionRepository.findTransactionsByPocketUuidOrderByDateDesc(pageable, pocketUuid);
+    }
+
+    @Override
+    @Transactional
+    public Transaction updateTransaction(String transactionId, Transaction payload, @Nullable UUID pocketUuid) throws EntityNotFoundException {
+        Transaction transaction = findTransactionById(transactionId);
+        Pocket oldPocket = transaction.getPocket();
+        transaction.setPocketForced(payload.isPocketForced());
+        transaction.setHideForced(payload.isHideForced());
+        transaction.setForceReason(payload.getForceReason());
+        if (pocketUuid != null && transaction.isPocketForced()) {
+            Pocket newPocket = pocketService.findPocketByUuid(pocketUuid);
+            transaction.setPocket(newPocket);
+            saveTransaction(transaction);
+            // In order to get the new pocket sums we need to refresh
+            entityManager.refresh(oldPocket);
+            entityManager.refresh(newPocket);
+            pocketService.recalculatePocketSum(oldPocket);
+            pocketService.recalculatePocketSum(newPocket);
+        }
+        return transaction;
     }
 
     @Override
