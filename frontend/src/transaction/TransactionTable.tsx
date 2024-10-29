@@ -124,7 +124,7 @@ export const TransactionTable = () => {
                   <TableCell className="text-right">
                     <CurrencyDisplay value={transaction.amount ?? 0} />
                   </TableCell>
-                  <TableCell className="w-[100px]">
+                  <TableCell className="w-[120px]">
                     <TransactionEditorDialog transaction={transaction} />
                   </TableCell>
                 </TableRow>
