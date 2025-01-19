@@ -1,10 +1,12 @@
 package xyz.mlhmz.savingscategorization.mappers;
 
+import org.springframework.stereotype.Component;
 import xyz.mlhmz.savingscategorization.dtos.QueryTransactionDto;
 import xyz.mlhmz.savingscategorization.dtos.QueryTransactionPocketDto;
 import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 
+@Component
 public class TransactionMapperImpl implements TransactionMapper {
     @Override
     public QueryTransactionDto mapTransactionToQueryTransaction(Transaction source) {

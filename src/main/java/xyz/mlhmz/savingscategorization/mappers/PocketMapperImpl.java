@@ -1,9 +1,11 @@
 package xyz.mlhmz.savingscategorization.mappers;
 
+import org.springframework.stereotype.Component;
 import xyz.mlhmz.savingscategorization.dtos.MutatePocketDto;
 import xyz.mlhmz.savingscategorization.dtos.QueryPocketDto;
 import xyz.mlhmz.savingscategorization.models.Pocket;
 
+@Component
 public class PocketMapperImpl implements PocketMapper {
     @Override
     public QueryPocketDto mapPocketToQueryPocket(Pocket pocket) {
