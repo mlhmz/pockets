@@ -1,5 +1,7 @@
 package xyz.mlhmz.savingscategorization.dtos;
 
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -11,5 +13,4 @@ public record QueryPocketDto(
         List<String> keywords,
         Double transactionSum
 ) {
-
 }

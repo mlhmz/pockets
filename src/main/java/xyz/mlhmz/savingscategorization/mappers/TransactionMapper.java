@@ -7,11 +7,6 @@ import xyz.mlhmz.savingscategorization.dtos.QueryTransactionPocketDto;
 import xyz.mlhmz.savingscategorization.models.Pocket;
 import xyz.mlhmz.savingscategorization.models.Transaction;
 
-@Mapper(
-        componentModel = "spring",
-        unmappedSourcePolicy = ReportingPolicy.IGNORE,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE
-)
 public interface TransactionMapper {
     QueryTransactionDto mapTransactionToQueryTransaction(Transaction source);
 

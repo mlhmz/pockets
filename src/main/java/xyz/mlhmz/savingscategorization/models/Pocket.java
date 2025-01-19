@@ -37,4 +37,12 @@ public class Pocket {
         this.iconName = iconName;
         this.keywords = keywords;
     }
+
+    public Pocket(String name, String identifier, String description, String iconName, List<String> keywords) {
+        this.name = name;
+        this.identifier = identifier;
+        this.description = description;
+        this.iconName = iconName;
+        this.keywords = keywords;
+    }
 }
