@@ -1,8 +1,9 @@
 import { cn } from "@/lib/utils";
-import { ArrowLeftRight, LayoutDashboard, Wallet, X } from "lucide-react";
+import { ArrowLeftRight, ChevronDown, LayoutDashboard, User, Wallet, X } from "lucide-react";
 import { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import { Button } from "./ui/button";
+import { useAuth } from "react-oidc-context";
 
 type Link = {
   icon: ReactNode;
@@ -14,12 +15,12 @@ const links: Link[] = [
   {
     icon: <LayoutDashboard />,
     text: "Dashboard",
-    href: "/",
+    href: "/app",
   },
   {
     icon: <ArrowLeftRight />,
     text: "Transactions",
-    href: "/transactions",
+    href: "/app/transactions",
   },
 ];
 
@@ -30,6 +31,8 @@ export const SideNav = ({
   showSideNav: boolean;
   setShowSideNav: (value: boolean) => void;
 }) => {
+  const { user } = useAuth();
+
   return (
     <div>
       <div
@@ -51,20 +54,31 @@ export const SideNav = ({
           <Wallet size={52} className="text-secondary-foreground" />
           <h1 className="text-xl">Savings</h1>
         </div>
-        {links.map((link) => (
-          <NavLink
-            className={({ isActive }) => cn(isActive ? "text-primary" : "")}
-            to={link.href}
-          >
-            <Button
-              className="flex justify-start items-center gap-1 w-full hover:text-primary"
-              variant={"ghost"}
-            >
-              {link.icon}
-              <p>{link.text}</p>
-            </Button>
-          </NavLink>
-        ))}
+        <div className="flex flex-col justify-between h-full">
+          <div>
+            {links.map((link) => (
+              <NavLink
+                className={({ isActive }) => cn(isActive ? "text-primary" : "")}
+                to={link.href}
+              >
+                <Button
+                  className="flex justify-start items-center gap-1 w-full hover:text-primary"
+                  variant={"ghost"}
+                >
+                  {link.icon}
+                  <p>{link.text}</p>
+                </Button>
+              </NavLink>
+            ))}
+          </div>
+          <Button variant={"outline"} className="flex justify-between w-full">
+            <div className="flex gap-2 items-center">
+              <User />
+              <p>{user?.profile.preferred_username}</p>
+            </div>
+            <ChevronDown />
+          </Button>
+        </div>
       </div>
     </div>
   );

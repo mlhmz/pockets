@@ -91,7 +91,7 @@ export const PocketEntry = ({ pocket }: { pocket?: Pocket }) => {
                 ))}
               </Table>
             </div>
-            <Link to={"/transactions/" + pocket?.uuid}>
+            <Link to={"/app/transactions/" + pocket?.uuid}>
               <Button variant="ghost" className="mt-1 w-full">
                 More
               </Button>
