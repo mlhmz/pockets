@@ -12,10 +12,8 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = {PocketMapper.class, PocketMapperImpl.class})
 class PocketMapperTest {
-    @Autowired
-    PocketMapper pocketMapper;
+    PocketMapper pocketMapper = new PocketMapperImpl();
 
     @Test
     void mapPocketToQueryPocket() {
