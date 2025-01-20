@@ -7,7 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useTransactions } from "@/hooks/use-transactions";
+import { useTransactions } from "@/transaction/hooks/use-transactions";
 import { Pocket } from "@/types/Pocket";
 import { ChevronDown, ChevronRight, CircleX } from "lucide-react";
 import { useState } from "react";

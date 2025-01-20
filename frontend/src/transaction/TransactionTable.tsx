@@ -14,7 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { usePageable } from "@/hooks/use-pageable";
-import { useTransactions } from "@/hooks/use-transactions";
+import { useTransactions } from "@/transaction/hooks/use-transactions";
 import { useQueryPockets } from "@/pocket/hooks/use-query-pockets";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";

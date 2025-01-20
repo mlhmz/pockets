@@ -1,21 +1,15 @@
+import { useFetch } from "@/hooks/use-fetch";
 import { Pockets } from "@/types/Pocket";
 import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "react-oidc-context";
-
-async function fetchPockets(token?: string) {
-  const result = await fetch("/api/v1/pockets", {
-    headers: {
-      "Authorization": "Bearer " + token
-    }
-  });
-  const data = await result.json();
-  return data as Pockets;
-}
 
 export const useQueryPockets = () => {
-  const { user } = useAuth();
+  const { request } = useFetch();
   return useQuery({
     queryKey: ["pockets"],
-    queryFn: () => fetchPockets(user?.access_token),
+    queryFn: async () => {
+      const result = await request("/api/v1/pockets");
+      const data = await result.json();
+      return data as Pockets;
+    }
   });
 };

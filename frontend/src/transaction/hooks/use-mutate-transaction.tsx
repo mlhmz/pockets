@@ -1,24 +1,7 @@
+import { useFetch } from "@/hooks/use-fetch";
 import { Transaction, TransactionMutation } from "@/types/Transaction";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "react-oidc-context";
 import { toast } from "sonner";
-
-async function updateTransaction(
-  transactionUuid: string,
-  transaction: TransactionMutation,
-  token?: string
-) {
-  const result = await fetch(`/api/v1/transactions/${transactionUuid}`, {
-    method: "PUT",
-    body: JSON.stringify(transaction),
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + token
-    },
-  });
-  const data = await result.json();
-  return data as Transaction;
-}
 
 export const useMutateTransaction = ({
   transactionId,
@@ -26,10 +9,16 @@ export const useMutateTransaction = ({
   transactionId: string;
 }) => {
   const queryClient = useQueryClient();
-  const { user } = useAuth();
+  const { request } = useFetch();
   const { mutate, error } = useMutation({
-    mutationFn: (transaction: TransactionMutation) =>
-      updateTransaction(transactionId, transaction, user?.access_token),
+    mutationFn: async (transaction: TransactionMutation) => {
+      const response = await request(`/api/v1/transactions/${transactionId}`, {
+        method: "PUT",
+        body: JSON.stringify(transaction)
+      })
+      const data = await response.json();
+      return data as Transaction;
+    },
     onSuccess: (result) => {
       queryClient.invalidateQueries({
         queryKey: ["transactions"],

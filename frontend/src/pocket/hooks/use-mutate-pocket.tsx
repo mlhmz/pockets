@@ -1,40 +1,33 @@
+import { useFetch } from "@/hooks/use-fetch";
 import { Pocket, PocketMutation } from "@/types/Pocket";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "react-oidc-context";
 import { toast } from "sonner";
-
-async function createPocket(pocket: PocketMutation, token?: string) {
-  const result = await fetch("/api/v1/pockets", {
-    method: "POST",
-    body: JSON.stringify(pocket),
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + token
-    },
-  });
-  const data = await result.json();
-  return data as Pocket;
-}
-
-async function updatePocket(pocket: PocketMutation, token?: string) {
-  const result = await fetch("/api/v1/pockets/" + pocket.uuid, {
-    method: "PUT",
-    body: JSON.stringify(pocket),
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + token
-    },
-  });
-  const data = await result.json();
-  return data as Pocket;
-}
 
 export const useMutatePocket = () => {
   const queryClient = useQueryClient();
-  const { user } = useAuth();
+  const { request } = useFetch();
+
+  const createPocket = async (pocket: PocketMutation) => {
+    const result = await request("/api/v1/pockets", {
+      method: "POST",
+      body: JSON.stringify(pocket),
+    });
+    const data = await result.json();
+    return data as Pocket;
+  }
+
+  const updatePocket = async (pocket: PocketMutation) => {
+    const result = await request("/api/v1/pockets/" + pocket.uuid, {
+      method: "PUT",
+      body: JSON.stringify(pocket),
+    });
+    const data = await result.json();
+    return data as Pocket;
+  }
+
   const { mutate, error } = useMutation({
     mutationFn: (pocket: PocketMutation) =>
-      pocket?.uuid ? updatePocket(pocket, user?.access_token) : createPocket(pocket, user?.access_token),
+      pocket?.uuid ? updatePocket(pocket) : createPocket(pocket),
     onSuccess: (result) => {
       queryClient.invalidateQueries({
         queryKey: ["pockets"],
