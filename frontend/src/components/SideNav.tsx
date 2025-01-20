@@ -2,13 +2,14 @@ import { ArrowLeftRight, ChevronUp, LayoutDashboard, User2 } from "lucide-react"
 import { ReactNode } from "react";
 import { useAuth } from "react-oidc-context";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
-import { Link, redirect } from "react-router-dom";
+import { Link, redirect, useLocation } from "react-router-dom";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 
 type Link = {
   icon: ReactNode;
   text: string;
   href: string;
+  strict: boolean;
 };
 
 const links: Link[] = [
@@ -16,11 +17,13 @@ const links: Link[] = [
     icon: <LayoutDashboard />,
     text: "Dashboard",
     href: "/app",
+    strict: true
   },
   {
     icon: <ArrowLeftRight />,
     text: "Transactions",
     href: "/app/transactions",
+    strict: false
   },
 ];
 
@@ -32,6 +35,16 @@ export const SideNav = ({
   setShowSideNav: (value: boolean) => void;
 }) => {
   const { user, signoutRedirect } = useAuth();
+  const location = useLocation();
+
+  const resolveClassNameByHref = (strict: boolean, href: string, pathname: string) => {
+    if (strict) {
+      return pathname === href ? "text-primary" : "";
+    } else {
+      return pathname.startsWith(href) ? "text-primary" : "";
+    }
+  }
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -42,7 +55,7 @@ export const SideNav = ({
               {links.map((item) => (
                 <SidebarMenuItem key={item.text}>
                   <SidebarMenuButton asChild>
-                    <Link to={item.href}>
+                    <Link to={item.href} className={resolveClassNameByHref(item.strict, item.href, location.pathname)}>
                       {item.icon}
                       <span>{item.text}</span>
                     </Link>
