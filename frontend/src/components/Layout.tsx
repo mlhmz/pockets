@@ -5,7 +5,7 @@ import { SideNav } from "./SideNav";
 import { Button } from "./ui/button";
 import { useAuth } from "react-oidc-context";
 import { toast } from "sonner";
-import { SidebarProvider } from "./ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 
 export const Layout = () => {
   const [showSideNav, setShowSideNav] = useState(false);
@@ -31,13 +31,7 @@ export const Layout = () => {
         <SideNav showSideNav={showSideNav} setShowSideNav={setShowSideNav} />
         <div className="flex-grow overflow-y-auto h-screen">
           <div className="p-5">
-            <Button
-              onClick={() => setShowSideNav(!showSideNav)}
-              variant="secondary"
-              className="md:hidden"
-            >
-              <Menu />
-            </Button>
+            <SidebarTrigger />
           </div>
           <Outlet />
         </div>
