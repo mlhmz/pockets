@@ -1,14 +1,11 @@
-import { Menu } from "lucide-react";
 import { useState } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { SideNav } from "./SideNav";
-import { Button } from "./ui/button";
 import { useAuth } from "react-oidc-context";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { toast } from "sonner";
+import { SideNav } from "./SideNav";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 
 export const Layout = () => {
-  const [showSideNav, setShowSideNav] = useState(false);
   const location = useLocation();
   const { isAuthenticated, isLoading, error } = useAuth();
 
@@ -28,7 +25,7 @@ export const Layout = () => {
   return (
     <div className="flex">
       <SidebarProvider>
-        <SideNav showSideNav={showSideNav} setShowSideNav={setShowSideNav} />
+        <SideNav />
         <div className="flex-grow overflow-y-auto h-screen">
           <div className="p-5">
             <SidebarTrigger />

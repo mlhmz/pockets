@@ -27,13 +27,7 @@ const links: Link[] = [
   },
 ];
 
-export const SideNav = ({
-  showSideNav,
-  setShowSideNav,
-}: {
-  showSideNav: boolean;
-  setShowSideNav: (value: boolean) => void;
-}) => {
+export const SideNav = () => {
   const { user, signoutRedirect } = useAuth();
   const location = useLocation();
 
