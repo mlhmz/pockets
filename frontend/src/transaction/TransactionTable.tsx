@@ -14,19 +14,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { usePageable } from "@/hooks/use-pageable";
+import { cn } from "@/lib/utils";
+import { useQueryPocket } from "@/pocket/hooks/use-query-pocket";
 import { useTransactions } from "@/transaction/hooks/use-transactions";
-import { useQueryPockets } from "@/pocket/hooks/use-query-pockets";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CurrencyDisplay } from "../components/CurrencyDisplay";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
 import {
   Table,
   TableBody,
@@ -35,17 +29,13 @@ import {
   TableHeader,
   TableRow,
 } from "../components/ui/table";
-import { cn } from "@/lib/utils";
 import { TransactionEditorDialog } from "./TransactionEditorDialog";
 
 export const TransactionTable = () => {
   const { uuid } = useParams();
-  const [selectedPocket, setSelectedPocket] = useState<string | undefined>(
-    uuid ?? undefined
-  );
-  const { data: pockets } = useQueryPockets();
+  const { data: pocket } = useQueryPocket(uuid);
   const [totalPages, setTotalPages] = useState(1);
-  const { pageable, previousPage, nextPage, nextPages, setPage, reset } =
+  const { pageable, previousPage, nextPage, nextPages, setPage } =
     usePageable({
       defaultPageable: {
         size: 20,
@@ -53,7 +43,7 @@ export const TransactionTable = () => {
       },
       totalPages: totalPages,
     });
-  const { data, isLoading } = useTransactions(selectedPocket, pageable);
+  const { data, isLoading } = useTransactions(uuid, pageable);
 
   // todo: weird, find a better way, of binding the total pages from the spring request.
   useEffect(() => {
@@ -69,28 +59,9 @@ export const TransactionTable = () => {
   }
   return (
     <div className="flex flex-col justify-center items-center m-5 gap-3">
-      <h1 className="self-start font-bold text-2xl">Transactions</h1>
-      <div className="self-start flex items-center gap-2">
-        <Select
-          value={selectedPocket}
-          onValueChange={(pocket) => {
-            setSelectedPocket(pocket);
-            reset();
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select a pocket..." />
-          </SelectTrigger>
-          <SelectContent>
-            {pockets &&
-              pockets?.map(
-                (pocket) =>
-                  pocket.uuid && (
-                    <SelectItem value={pocket.uuid}>{pocket.name}</SelectItem>
-                  )
-              )}
-          </SelectContent>
-        </Select>
+      <div className="self-start flex flex-col min-h-14">
+        <h1 className="font-bold text-2xl m-0">Transactions</h1>
+        <h2 className="text-sm">{pocket?.name}</h2>
       </div>
       <div className="border border-border shadow-sm rounded-md overflow-y-scroll h-[70vh] w-full bg-gray-100">
         <Table>
