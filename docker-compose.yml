@@ -56,6 +56,23 @@ services:
         - '8081:8080'
         - '8443:8443'
       command: start-dev
+  app:
+    image: savings_categorization:latest
+    restart: unless-stopped
+    ports:
+      - "8085:8080"
+    links:
+      - keycloak
+      - postgres
+    environment:
+      POSTGRES_DB_URL: postgres
+      POSTGRES_DB_PORT: 5432
+      POSTGRES_DB_SCHEMA: savings
+      POSTGRES_DB_USERNAME: savings
+      POSTGRES_DB_PASSWORD: savings
+      OIDC_ISSUER_HOST: http://localhost:8081
+      OIDC_JWK_HOST: http://keycloak:8081
+      OIDC_REALM: savings-categorization
 
 volumes:
   postgres-data:
