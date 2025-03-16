@@ -74,7 +74,7 @@ public class DkbTransactionsCsvReader implements TransactionsCsvReader {
 
     private CSVFormat getDefaultCsvFormat() {
         return CSVFormat.Builder.create()
-                .setDelimiter(',')
+                .setDelimiter(';')
                 .setQuote('"')
                 .setCommentMarker('#')
                 .setIgnoreEmptyLines(true)
