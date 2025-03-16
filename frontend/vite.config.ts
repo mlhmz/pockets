@@ -7,7 +7,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api/v1": "http://localhost:8083"
+      "/api/v1": "http://localhost:8083",
+      "/oidc-config": "http://localhost:8083"
     }
   },
   resolve: {

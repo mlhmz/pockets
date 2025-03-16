@@ -45,7 +45,7 @@ public class SecurityConfig {
 
     private void getRequestMatcherRegistry(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorizationManager) {
         authorizationManager.requestMatchers("/actuator/health", "/swagger/**", "/swagger-ui/**", "/v3/api-docs/**",
-                        "/", "/**", "/index.html", "/app/**", "/assets/**")
+                        "/", "/**", "/index.html", "/app/**", "/assets/**", "/oidc-config")
                 .permitAll()
                 .anyRequest().authenticated();
     }
