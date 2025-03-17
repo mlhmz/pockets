@@ -71,8 +71,11 @@ services:
       POSTGRES_DB_USERNAME: savings
       POSTGRES_DB_PASSWORD: savings
       OIDC_ISSUER_HOST: http://localhost:8081
-      OIDC_JWK_HOST: http://keycloak:8081
+      OIDC_JWK_HOST: http://keycloak:8080
       OIDC_REALM: savings-categorization
+      FRONTEND_OIDC_AUTHORITY: http://localhost:8081/realms/savings-categorization
+      FRONTEND_CLIENT_ID: react-client
+      FRONTEND_REDIRECT_URI: http://localhost:8085/
 
 volumes:
   postgres-data:
