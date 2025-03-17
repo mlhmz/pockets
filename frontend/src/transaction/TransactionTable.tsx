@@ -3,9 +3,8 @@ import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
-  PaginationPrevious,
+  PaginationPrevious
 } from "@/components/ui/pagination";
 import {
   Tooltip,
@@ -14,7 +13,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { usePageable } from "@/hooks/use-pageable";
-import { cn } from "@/lib/utils";
 import { useQueryPocket } from "@/pocket/hooks/use-query-pocket";
 import { useTransactions } from "@/transaction/hooks/use-transactions";
 import { Loader2 } from "lucide-react";
@@ -35,10 +33,10 @@ export const TransactionTable = () => {
   const { uuid } = useParams();
   const { data: pocket } = useQueryPocket(uuid);
   const [totalPages, setTotalPages] = useState(1);
-  const { pageable, previousPage, nextPage, nextPages, setPage } =
+  const { pageable, previousPage, nextPage } =
     usePageable({
       defaultPageable: {
-        size: 20,
+        size: 10,
         page: 0,
       },
       totalPages: totalPages,
@@ -111,18 +109,7 @@ export const TransactionTable = () => {
               onClick={() => previousPage()}
             />
           </PaginationItem>
-          {nextPages.map((value) => (
-            <PaginationItem
-              className={cn(
-                value.current && "border rounded-md shadow-sm",
-                "cursor-pointer"
-              )}
-            >
-              <PaginationLink onClick={() => setPage(value.index)}>
-                {value.index + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
+          <p >{(pageable.page ?? 1) + 1} / {data?.page.totalPages}</p>
           <PaginationItem>
             <PaginationNext
               className="cursor-pointer"

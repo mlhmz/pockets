@@ -1,6 +1,5 @@
 import { Pageable } from "@/types/Page";
-import { useMemo, useState } from "react";
-import { useNextPages } from "./use-next-pages";
+import { useState } from "react";
 
 export const usePageable = ({
   defaultPageable,
@@ -12,9 +11,6 @@ export const usePageable = ({
   const [pageable, setPageable] = useState<Pageable>(
     defaultPageable ?? ({} as Pageable)
   );
-  const currentPage = useMemo(() => pageable?.page ?? 1, [pageable]);
-  const maxPages = useMemo(() => totalPages ?? 1, [totalPages]);
-  const nextPages = useNextPages(currentPage, maxPages);
 
   const previousPage = () =>
     setPageable((old) => {
@@ -52,7 +48,6 @@ export const usePageable = ({
     previousPage,
     nextPage,
     reset,
-    nextPages,
     setPage,
   };
 };
