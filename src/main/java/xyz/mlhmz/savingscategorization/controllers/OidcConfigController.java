@@ -19,7 +19,7 @@ public class OidcConfigController {
             String authority,
             @JsonProperty("client_id")
             String clientId,
-            @JsonProperty("redirect_id")
+            @JsonProperty("redirect_uri")
             String redirectUri) {
     }
 }
