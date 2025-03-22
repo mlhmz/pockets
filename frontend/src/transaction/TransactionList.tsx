@@ -2,17 +2,18 @@ import { CurrencyDisplay } from "@/components/CurrencyDisplay";
 import { FromNow } from "@/components/FromNow";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useMutateDeletePocket } from "@/pocket/hooks/use-mutate-delete-pocket";
 import { useQueryPocket } from "@/pocket/hooks/use-query-pocket";
 import { PocketEditorDialog } from "@/pocket/PocketEditorDialog";
 import { useTransactions } from "@/transaction/hooks/use-transactions";
 import { Transaction } from "@/types/Transaction";
+import { DialogTitle } from "@radix-ui/react-dialog";
 import { format } from "date-fns";
 import { CircleX, Loader } from "lucide-react";
 import { useMemo, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const TransactionCard = ({ transaction, isFirst, isLast }: { transaction: Transaction, isFirst: boolean, isLast: boolean }) => {
   // How could i implement that the first element is top rounded and the last is bottom rounded?
@@ -36,6 +37,7 @@ export const TransactionList = () => {
   const { data, isLoading, isFetching, fetchNextPage, hasNextPage } = useTransactions(uuid);
   const listRef = useRef<HTMLDivElement | null>(null);
   const { mutate: mutateDelete } = useMutateDeletePocket();
+  const navigate = useNavigate();
 
   // Group transactions by date
   const groupedTransactions = useMemo(() => {
@@ -58,8 +60,6 @@ export const TransactionList = () => {
     }
   }
 
-  console.log(isLoading)
-
   return (
     <div ref={listRef} onScroll={onScroll} className="flex flex-col items-center container h-full overflow-y-auto gap-2" >
       <Card className="w-full mt-5">
@@ -74,9 +74,12 @@ export const TransactionList = () => {
           </div>
           <div id="actions" className="flex justify-end gap-3">
             <PocketEditorDialog pocket={pocket} />
-            <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
+
+            <Dialog>
+              <TooltipProvider>
+                <Tooltip>
+                  <DialogTrigger asChild>
+                    <TooltipTrigger asChild>
                       <Button
                         variant="ghost"
                         className="flex gap-1 hover:bg-red-50"
@@ -84,15 +87,27 @@ export const TransactionList = () => {
                         <CircleX />
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>Delete</TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-            <Dialog>
-              <DialogTrigger>
-                Delete
-              </DialogTrigger>
+                  </DialogTrigger>
+                  <TooltipContent>Delete</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               <DialogContent>
-                Are you sure you want to delete the pocket?
+                <DialogHeader>
+                  <DialogTitle className="font-bold">Delete Pocket</DialogTitle>
+                </DialogHeader>
+                <div className="flex flex-col">
+                  Are you sure you want to delete the pocket?
+                  <Button
+                    className="mt-3 self-end bg-red-500 hover:bg-red-600"
+                    onClick={() => mutateDelete(pocket, {
+                      onSuccess: () => {
+                        navigate("/app");
+                      }
+                    })}
+                  >
+                    Delete
+                  </Button>
+                </div>
               </DialogContent>
             </Dialog>
           </div>
