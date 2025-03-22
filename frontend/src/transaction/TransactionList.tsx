@@ -130,7 +130,7 @@ export const TransactionList = () => {
             </div>
           ))
         }
-        {hasNextPage && <Button className="my-2">Load more</Button>}
+        {hasNextPage && <Button className="my-2" onClick={() => fetchNextPage()}>Load more</Button>}
         {(isLoading || isFetching) && <div className="w-full flex justify-center my-2" ><Loader className="animate-spin" /></div>}
       </div>
     </div >
