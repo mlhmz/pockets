@@ -1,13 +1,21 @@
-import { Card } from "@/components/ui/card";
+import { CurrencyDisplay } from "@/components/CurrencyDisplay";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Pockets } from "@/types/Pocket";
-import { PocketEntry } from "./PocketEntry";
-import { cn, isIndexLastListEntry } from "@/lib/utils";
+import { Link } from "react-router-dom";
+
 export const PocketEntries = ({ data }: { data?: Pockets }) => (
-  <Card className="flex flex-col">
-    {data?.map((entry, index) => (
-      <div className={cn(!isIndexLastListEntry(index, data) && "border-b")}>
-        <PocketEntry pocket={entry} />
-      </div>
+  <div className="grid grid-cols-3 gap-3">
+    {data?.map((entry) => (
+      <Link className="" to={"/app/transactions/" + entry?.uuid}>
+        <Card key={entry.uuid} className="hover:bg-muted transition-all cursor-pointer">
+          <CardHeader>
+            <p className="font-semibold text-md">{entry?.name}</p>
+          </CardHeader>
+          <CardContent>
+            <p className="text-md self-end"><CurrencyDisplay value={entry?.transactionSum ?? 0} /></p>
+          </CardContent>
+        </Card>
+      </Link>
     ))}
-  </Card>
+  </div>
 );

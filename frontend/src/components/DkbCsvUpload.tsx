@@ -41,7 +41,7 @@ export const DkbCsvUpload = () => {
   return (
     <div
       onClick={onClick}
-      className="flex flex-col bg-gray-100 hover:bg-gray-200 rounded-md border border-border items-center justify-center min-h-31 p-5 transition-all cursor-pointer"
+      className="flex flex-col bg-gray-100 hover:bg-gray-200 rounded-md border border-border items-center justify-center min-h-31 p-5 transition-all cursor-pointer w-full"
     >
       {file ? (
         <Loader className="text-gray-400 animate-spin" />

@@ -10,6 +10,8 @@ export const useQueryPocket = (uuid?: string) => {
       const result = await request(`/api/v1/pockets/${uuid}`);
       const data = await result.json();
       return data as Pocket;
-    }
+    },
+    staleTime: 1000 * 60 * 5,
+    enabled: !!uuid,
   });
 };
