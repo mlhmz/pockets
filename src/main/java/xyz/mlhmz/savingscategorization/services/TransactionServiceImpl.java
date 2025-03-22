@@ -42,7 +42,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Page<Transaction> findAllTransactions(Pageable pageable) {
-        return transactionRepository.findAllByOrderByDateDesc(pageable);
+        return transactionRepository.findAllByOrderByDateDescIdDesc(pageable);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Page<Transaction> findTransactionsByPocket(Pageable pageable, UUID pocketUuid) {
-        return transactionRepository.findTransactionsByPocketUuidOrderByDateDesc(pageable, pocketUuid);
+        return transactionRepository.findTransactionsByPocketUuidOrderByDateDescIdDesc(pageable, pocketUuid);
     }
 
     @Override
