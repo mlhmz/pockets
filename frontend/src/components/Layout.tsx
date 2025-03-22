@@ -1,6 +1,7 @@
 import { useAuth } from "react-oidc-context";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { toast } from "sonner";
+import { Breadcrumbs } from "./Breadcrumbs";
 import { SideNav } from "./SideNav";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 
@@ -26,10 +27,13 @@ export const Layout = () => {
       <SidebarProvider>
         <SideNav />
         <div className="flex-grow overflow-y-auto h-screen">
-          <div className="p-5">
+          <div className="flex items-center gap-3 p-5 border-b shadow-sm bg-sidebar h-[7vh]">
             <SidebarTrigger />
+            <Breadcrumbs location={location} />
           </div>
-          <Outlet />
+          <div className="overflow-y-auto h-[93vh]">
+            <Outlet />
+          </div>
         </div>
       </SidebarProvider>
     </div>
