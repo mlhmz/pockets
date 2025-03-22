@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { SideNav } from "./SideNav";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
+import { Loader, Loader2, LoaderCircle, LoaderPinwheel } from "lucide-react";
 
 export const Layout = () => {
   const location = useLocation();
@@ -13,9 +14,9 @@ export const Layout = () => {
 
   if (isAuthenticated === undefined || isLoading) {
     return (
-      <div className="flex flex-col justify-center items-center h-screen gap-3">
-        <span className="loading loading-spinner loading-lg"></span>
-        <p>Loading</p>
+      <div className="flex flex-col justify-center items-center h-screen w-screen gap-3">
+        <LoaderCircle size={32} className="animate-spin ease-in-out" />
+        <p>Authenticating...</p>
       </div>
     );
   }
