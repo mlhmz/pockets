@@ -1,10 +1,10 @@
+import { LoaderCircle } from "lucide-react";
 import { useAuth } from "react-oidc-context";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { SideNav } from "./SideNav";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
-import { Loader, Loader2, LoaderCircle, LoaderPinwheel } from "lucide-react";
 
 export const Layout = () => {
   const location = useLocation();

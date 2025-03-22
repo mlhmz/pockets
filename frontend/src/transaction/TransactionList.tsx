@@ -2,7 +2,6 @@ import { CurrencyDisplay } from "@/components/CurrencyDisplay";
 import { FromNow } from "@/components/FromNow";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useMutateDeletePocket } from "@/pocket/hooks/use-mutate-delete-pocket";
 import { useQueryPocket } from "@/pocket/hooks/use-query-pocket";
