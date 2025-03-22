@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Dashboard } from "./components/Dashboard";
+import { Hero } from "./components/Hero";
 import { Layout } from "./components/Layout";
 import { NotFound } from "./components/NotFound";
-import { TransactionTable } from "./transaction/TransactionTable";
-import { Hero } from "./components/Hero";
+import { TransactionList } from "./transaction/TransactionList";
 
 export const router = createBrowserRouter([
   {
@@ -14,8 +14,8 @@ export const router = createBrowserRouter([
         path: "",
         element: <Dashboard />,
       },
-      { path: "/app/transactions", element: <TransactionTable /> },
-      { path: "/app/transactions/:uuid", element: <TransactionTable /> },
+      { path: "/app/transactions", element: <TransactionList /> },
+      { path: "/app/transactions/:uuid", element: <TransactionList /> },
     ],
   },
   {
