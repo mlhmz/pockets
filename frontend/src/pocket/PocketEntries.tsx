@@ -12,7 +12,7 @@ export const PocketEntries = ({ data }: { data?: Pockets }) => (
             <p className="font-semibold text-md">{entry?.name}</p>
           </CardHeader>
           <CardContent>
-            <p className="text-md self-end"><CurrencyDisplay value={entry?.transactionSum ?? 0} /></p>
+            <CurrencyDisplay className="text-md self-end" value={entry?.transactionSum ?? 0} />
           </CardContent>
         </Card>
       </Link>

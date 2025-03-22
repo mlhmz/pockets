@@ -1,4 +1,8 @@
-export const CurrencyDisplay = ({ value }: { value: number }) => {
+interface CurrencyDisplayProps extends React.HTMLAttributes<HTMLParagraphElement> {
+  value: number;
+}
+
+export const CurrencyDisplay = ({ value, ...props }: CurrencyDisplayProps) => {
   const getClassNameByValue = () => {
     if (value < 0) {
       return "text-red-600";
@@ -7,5 +11,5 @@ export const CurrencyDisplay = ({ value }: { value: number }) => {
     }
   };
 
-  return <p className={getClassNameByValue()}>{value.toFixed(2).toString().replace(".", ",")}€</p>;
+  return <p className={getClassNameByValue()} {...props}>{value.toFixed(2).toString().replace(".", ",")}€</p>;
 };

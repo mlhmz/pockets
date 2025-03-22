@@ -2,6 +2,7 @@ import { CurrencyDisplay } from "@/components/CurrencyDisplay";
 import { FromNow } from "@/components/FromNow";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useMutateDeletePocket } from "@/pocket/hooks/use-mutate-delete-pocket";
 import { useQueryPocket } from "@/pocket/hooks/use-query-pocket";
@@ -32,7 +33,7 @@ export const TransactionCard = ({ transaction, isFirst, isLast }: { transaction:
 export const TransactionList = () => {
   const { uuid } = useParams();
   const { data: pocket } = useQueryPocket(uuid);
-  const { data, isLoading, isFetching, fetchNextPage } = useTransactions(uuid);
+  const { data, isLoading, isFetching, fetchNextPage, hasNextPage } = useTransactions(uuid);
   const listRef = useRef<HTMLDivElement | null>(null);
   const { mutate: mutateDelete } = useMutateDeletePocket();
 
@@ -69,24 +70,31 @@ export const TransactionList = () => {
         {pocket && <CardContent>
           <div className="flex flex-col">
             <p className="text-xs">Summe</p>
-            <p className="text-xl font-bold"><CurrencyDisplay value={pocket?.transactionSum ?? 0} /></p>
+            <CurrencyDisplay className="text-xl font-bold" value={pocket?.transactionSum ?? 0} />
           </div>
           <div id="actions" className="flex justify-end gap-3">
             <PocketEditorDialog pocket={pocket} />
             <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Button
-                    variant="ghost"
-                    className="flex gap-1 hover:bg-red-50"
-                    onClick={() => mutateDelete(pocket)}
-                  >
-                    <CircleX />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Delete</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Button
+                        variant="ghost"
+                        className="flex gap-1 hover:bg-red-50"
+                      >
+                        <CircleX />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Delete</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+            <Dialog>
+              <DialogTrigger>
+                Delete
+              </DialogTrigger>
+              <DialogContent>
+                Are you sure you want to delete the pocket?
+              </DialogContent>
+            </Dialog>
           </div>
         </CardContent>
         }
@@ -107,6 +115,7 @@ export const TransactionList = () => {
             </div>
           ))
         }
+        {hasNextPage && <Button className="my-2">Load more</Button>}
         {(isLoading || isFetching) && <div className="w-full flex justify-center my-2" ><Loader className="animate-spin" /></div>}
       </div>
     </div >
