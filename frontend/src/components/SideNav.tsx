@@ -23,7 +23,6 @@ export const SideNav = () => {
   const { user, signoutRedirect } = useAuth();
   const location = useLocation();
   const { data } = useQueryPockets();
-  console.log(data)
   const links = useMemo(() => [
     {
       icon: <LayoutDashboard />,
@@ -59,28 +58,25 @@ export const SideNav = () => {
           <SidebarGroupContent>
             <SidebarMenu>
               {links.map((item) => (
-                <>
-                  <SidebarMenuItem key={item.text}>
-                    <SidebarMenuButton asChild>
-                      <Link to={item.href} className={resolveClassNameByHref(item.strict, item.href, location.pathname)}>
-                        {item.icon}
-                        <span>{item.text}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                    {item.links && <SidebarMenuSub>
-                      {item.links?.map(link => (
-                        <SidebarMenuItem key={link.text}>
-                          <SidebarMenuButton asChild>
-                            <Link to={link.href} className={resolveClassNameByHref(true, link.href, location.pathname)}>
-                              <span>{link.text}</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      ))}
-                    </SidebarMenuSub>}
-
-                  </SidebarMenuItem>
-                </>
+                <SidebarMenuItem key={item.text}>
+                  <SidebarMenuButton asChild>
+                    <Link to={item.href} className={resolveClassNameByHref(item.strict, item.href, location.pathname)}>
+                      {item.icon}
+                      <span>{item.text}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                  {item.links && <SidebarMenuSub>
+                    {item.links?.map(link => (
+                      <SidebarMenuItem key={link.text}>
+                        <SidebarMenuButton asChild>
+                          <Link to={link.href} className={resolveClassNameByHref(true, link.href, location.pathname)}>
+                            <span>{link.text}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenuSub>}
+                </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>

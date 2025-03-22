@@ -55,6 +55,11 @@ export const routes: Routes[] = [
   }
 ];
 
+interface Breadcrumb {
+  id: string;
+  element: React.ReactNode;
+}
+
 export const Breadcrumbs = ({location}: {location: Location}) => {
   const breadcrumbs = useMemo(() => {
     // Regular expression to match UUIDs
@@ -72,15 +77,20 @@ export const Breadcrumbs = ({location}: {location: Location}) => {
     const uuidMatch = location.pathname.match(uuidRegex);
     const uuid = uuidMatch ? uuidMatch[0] : undefined;
 
-    return currentRoute.mapping.map(mapping => <>{mapping.content(uuid)}</>);
+    return currentRoute.mapping.map(mapping => {
+      return {
+        id: mapping.section,
+        element: mapping.content(uuid),
+      } as Breadcrumb;
+    });
   }, [location.pathname]);
 
   return (
     <div className="flex items-center gap-2 border-l pl-3">
-      {breadcrumbs.map((breadcrumb, index) => (<>
-        <div key={index}>{breadcrumb}</div>
+      {breadcrumbs.map((breadcrumb, index) => (<div className="flex items-center gap-3" key={index}>
+        <div key={index}>{breadcrumb.element}</div>
         {index !== breadcrumbs.length - 1 && <p className="text-muted-foreground"><ChevronRight size={16} /></p>}
-      </>
+      </div>
       ))}
     </div>
   );
