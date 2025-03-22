@@ -10,7 +10,7 @@ import { PocketEditorDialog } from "@/pocket/PocketEditorDialog";
 import { useTransactions } from "@/transaction/hooks/use-transactions";
 import { Transaction } from "@/types/Transaction";
 import { format } from "date-fns";
-import { CircleX } from "lucide-react";
+import { CircleX, Loader } from "lucide-react";
 import { useMemo, useRef } from "react";
 import { useParams } from "react-router-dom";
 
@@ -33,7 +33,7 @@ export const TransactionCard = ({ transaction, isFirst, isLast }: { transaction:
 export const TransactionList = () => {
   const { uuid } = useParams();
   const { data: pocket } = useQueryPocket(uuid);
-  const { data, isLoading, fetchNextPage } = useTransactions(uuid);
+  const { data, isLoading, isFetching, fetchNextPage } = useTransactions(uuid);
   const listRef = useRef<HTMLDivElement | null>(null);
   const { mutate: mutateDelete } = useMutateDeletePocket();
 
@@ -57,6 +57,8 @@ export const TransactionList = () => {
       fetchNextPage();
     }
   }
+
+  console.log(isLoading)
 
   return (
     <div ref={listRef} onScroll={onScroll} className="flex flex-col items-center container h-full overflow-y-auto gap-2" >
@@ -106,6 +108,7 @@ export const TransactionList = () => {
             </div>
           ))
         }
+        {(isLoading || isFetching) && <div className="w-full flex justify-center my-2" ><Loader className="animate-spin" /></div>}
       </div>
     </div >
   );
