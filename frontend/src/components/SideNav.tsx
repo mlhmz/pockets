@@ -1,5 +1,5 @@
 import { useQueryPockets } from "@/pocket/hooks/use-query-pockets";
-import { ArrowLeftRight, ChevronUp, LayoutDashboard, User2 } from "lucide-react";
+import { ArrowLeftRight, ChevronUp, LayoutDashboard, User2, WalletCards } from "lucide-react";
 import { ReactNode, useMemo } from "react";
 import { useAuth } from "react-oidc-context";
 import { Link, useLocation } from "react-router-dom";
@@ -54,8 +54,13 @@ export const SideNav = () => {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Savings Categorization</SidebarGroupLabel>
           <SidebarGroupContent>
+            <div id="nav-header" className="flex items-center gap-2 p-3">
+              <div id="logo-container" className="bg-primary rounded-md p-1">
+                <WalletCards className="text-white" />
+              </div>
+              <h3 className="text-lg font-semibold">Pockets</h3>
+            </div>
             <SidebarMenu>
               {links.map((item) => (
                 <SidebarMenuItem key={item.text}>

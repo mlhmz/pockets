@@ -75,7 +75,7 @@ services:
       OIDC_REALM: savings-categorization
       FRONTEND_OIDC_AUTHORITY: http://localhost:8081/realms/savings-categorization
       FRONTEND_CLIENT_ID: react-client
-      FRONTEND_REDIRECT_URI: http://localhost:8085/
+      FRONTEND_REDIRECT_URI: http://localhost:5173/
 
 volumes:
   postgres-data:
