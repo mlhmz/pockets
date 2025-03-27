@@ -20,7 +20,7 @@ type SubLink = {
 }
 
 export const SideNav = () => {
-  const { user, signoutRedirect } = useAuth();
+  const { user, signoutRedirect, settings } = useAuth();
   const location = useLocation();
   const { data } = useQueryPockets();
   const links = useMemo(() => [
@@ -101,6 +101,11 @@ export const SideNav = () => {
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
               >
+                <DropdownMenuItem onClick={() => {
+                  window.open(`${settings.authority}/account`, "_blank");
+                }}>
+                  <span>Account</span>
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => {
                   signoutRedirect();
                 }}>

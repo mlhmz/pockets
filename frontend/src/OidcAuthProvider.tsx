@@ -26,7 +26,7 @@ export const OidcAuthProvider = ({ children }: { children: React.ReactNode }) =>
     return <div className="flex flex-col justify-center items-center h-screen w-screen gap-3">
       <LoaderCircle size={32} className="animate-spin ease-in-out" />
       <p>Authenticating...</p>
-    </div>;
+    </div>
   }
   return <AuthProvider {...data}>{children}</AuthProvider>;
 }
