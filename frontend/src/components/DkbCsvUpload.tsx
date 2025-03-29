@@ -41,12 +41,12 @@ export const DkbCsvUpload = () => {
   return (
     <div
       onClick={onClick}
-      className="flex flex-col bg-gray-100 hover:bg-gray-200 rounded-md border border-border items-center justify-center min-h-31 p-5 transition-all cursor-pointer w-full"
+      className="flex flex-col bg-muted hover:bg-muted/80 rounded-md border border-border items-center justify-center min-h-31 p-5 transition-all cursor-pointer w-full"
     >
       {file ? (
-        <Loader className="text-gray-400 animate-spin" />
+        <Loader className="text-muted-foreground animate-spin" />
       ) : (
-        <Upload className="text-gray-400" width={36} height={36} />
+        <Upload className="text-muted-foreground" width={36} height={36} />
       )}
 
       <input
@@ -56,8 +56,8 @@ export const DkbCsvUpload = () => {
         onChange={onFileUploadChange}
         hidden
       />
-      <p className="text-gray-600">Upload DKB CSV</p>
-      <p className="text-gray-600 text-xs">{file?.name}</p>
+      <p className="text-muted-foreground">Upload DKB CSV</p>
+      <p className="text-muted-foreground text-xs">{file?.name}</p>
     </div>
   );
 };

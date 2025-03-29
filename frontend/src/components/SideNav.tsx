@@ -5,6 +5,7 @@ import { useAuth } from "react-oidc-context";
 import { Link, useLocation } from "react-router-dom";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub } from "./ui/sidebar";
+import { ModeToggle } from "./ModeToggle";
 
 type Link = {
   icon: ReactNode;
@@ -101,6 +102,7 @@ export const SideNav = () => {
                 side="top"
                 className="w-(--radix-popper-anchor-width)"
               >
+                <ModeToggle />
                 <DropdownMenuItem onClick={() => {
                   window.open(`${settings.authority}/account`, "_blank");
                 }}>

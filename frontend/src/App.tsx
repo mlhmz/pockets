@@ -4,6 +4,7 @@ import { router } from "./router";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster, toast } from "sonner";
 import { OidcAuthProvider } from "./OidcAuthProvider";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,11 +21,13 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <OidcAuthProvider>
-          <Toaster />
-          <RouterProvider router={router} />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </OidcAuthProvider>
+        <ThemeProvider>
+          <OidcAuthProvider>
+            <Toaster />
+            <RouterProvider router={router} />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </OidcAuthProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </>
   );
