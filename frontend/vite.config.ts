@@ -2,18 +2,23 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import * as path from "node:path";
 import { VitePWA } from 'vite-plugin-pwa'
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), VitePWA({
-    registerType: 'autoUpdate',
-    manifest: {
-      name: 'Pockets',
-      short_name: 'Pockets',
-      description: 'Savings app',
-      theme_color: '#163a87',
-    },
-  })],
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      manifest: {
+        name: 'Pockets',
+        short_name: 'Pockets',
+        description: 'Savings app',
+        theme_color: '#163a87',
+      },
+    }),
+    tailwindcss(),
+  ],
   server: {
     proxy: {
       "/api/v1": "http://localhost:8083",
