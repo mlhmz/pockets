@@ -29,6 +29,18 @@ export const CategoriesChart = ({ data }: { data: Pockets }) => {
       : "";
   };
 
+
+  const calculateChartIndex = (index: number): number => {
+    const calculatedModulo = (index + 1) % 9;
+    if (calculatedModulo === 0) {
+      console.log(`Before: ${index}, Modulo ${calculatedModulo},  After (forced) ${1}`)
+      return 1;
+    } else {
+      console.log(`Before: ${index}, Modulo ${calculatedModulo}, After ${calculatedModulo}`)
+      return calculatedModulo;
+    }
+  }
+
   return (
     <Card className="flex flex-col py-1">
       <CardContent className="flex-1 pb-0">
@@ -108,7 +120,7 @@ export const CategoriesChart = ({ data }: { data: Pockets }) => {
               {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={`hsl(var(--chart-${index % 5}))`}
+                  fill={`var(--chart-${calculateChartIndex(index)})`}
                   className="cursor-pointer"
                   onClick={() => setSelection(entry)}
                 ></Cell>

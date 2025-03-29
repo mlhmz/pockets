@@ -14,6 +14,7 @@ import { format } from "date-fns";
 import { CircleX, Loader } from "lucide-react";
 import { useMemo, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { TransactionEditorDialog } from "./TransactionEditorDialog";
 
 export const TransactionCard = ({ transaction, isFirst, isLast }: { transaction: Transaction, isFirst: boolean, isLast: boolean }) => {
   // How could i implement that the first element is top rounded and the last is bottom rounded?
@@ -23,10 +24,14 @@ export const TransactionCard = ({ transaction, isFirst, isLast }: { transaction:
       <h2 className="font-bold">{transaction.issuer}</h2>
       <p className="text-xs text-gray-600">{transaction.reason}</p>
     </div>
-    <div className="flex flex-col items-end">
-      <CurrencyDisplay value={transaction.amount ?? 0} />
-      <p className="text-sm"><FromNow date={transaction.date} /></p>
+    <div className="flex items-end">
+      <TransactionEditorDialog transaction={transaction} />
+      <div className="flex flex-col">
+        <CurrencyDisplay value={transaction.amount ?? 0} />
+        <p className="text-sm"><FromNow date={transaction.date} /></p>
+      </div>
     </div>
+
 
   </div>
 }
