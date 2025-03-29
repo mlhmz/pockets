@@ -13,7 +13,7 @@ export const Hero = () => {
     return <Navigate to="/app" replace state={{ from: location }} />;
   } else if (isAuthenticated != null && !isAuthenticated) {
     return <div className="w-screen h-screen flex items-center justify-center">
-      <div className="flex flex-col items-center gap-3 border p-2 rounded-md shadow">
+      <div className="flex flex-col items-center gap-3 border p-2 rounded-md shadow-sm">
         <p className="font-bold text-xl">Login with SSO</p>
         <Button onClick={() => signinRedirect()}>Login</Button>
       </div>

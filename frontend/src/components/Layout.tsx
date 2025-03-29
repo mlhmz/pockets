@@ -27,8 +27,8 @@ export const Layout = () => {
     <div className="flex">
       <SidebarProvider>
         <SideNav />
-        <div className="flex-grow overflow-y-auto h-screen">
-          <div className="flex items-center gap-3 p-5 border-b shadow-sm bg-sidebar h-[7vh]">
+        <div className="grow overflow-y-auto h-screen">
+          <div className="flex items-center gap-3 p-5 border-b shadow-xs bg-sidebar h-[7vh]">
             <SidebarTrigger />
             <Breadcrumbs location={location} />
           </div>

@@ -99,7 +99,7 @@ export const SideNav = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 side="top"
-                className="w-[--radix-popper-anchor-width]"
+                className="w-(--radix-popper-anchor-width)"
               >
                 <DropdownMenuItem onClick={() => {
                   window.open(`${settings.authority}/account`, "_blank");

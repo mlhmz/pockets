@@ -28,7 +28,7 @@ export const StringListInputField = ({
   return (
     <div className="flex flex-col gap-3">
       <div className="px-3 py-1 rounded-lg border flex justify-between items-center">
-        <ul className="flex gap-2 py-2 flex-wrap flex-grow min-h-10">
+        <ul className="flex gap-2 py-2 flex-wrap grow min-h-10">
           {value.map((keywordEntry) => (
             <Badge
               className="flex justify-center items-center gap-1 hover:bg-red-500 cursor-pointer"
@@ -43,7 +43,7 @@ export const StringListInputField = ({
             </Badge>
           ))}
         </ul>
-        <p className="flex-shrink text-gray-400">
+        <p className="shrink text-gray-400">
           {value.length !== 0 ? value.length : "Empty"}
         </p>
       </div>

@@ -18,7 +18,7 @@ import { useNavigate, useParams } from "react-router-dom";
 export const TransactionCard = ({ transaction, isFirst, isLast }: { transaction: Transaction, isFirst: boolean, isLast: boolean }) => {
   // How could i implement that the first element is top rounded and the last is bottom rounded?
   const roundedClasses = `${isFirst ? 'rounded-t-md' : ''} ${isLast ? 'rounded-b-md border-b' : ''}`;
-  return <div className={`flex justify-between items-center p-2 border-t ${roundedClasses} border-x w-full shadow-sm hover:bg-muted transition-colors`}>
+  return <div className={`flex justify-between items-center p-2 border-t ${roundedClasses} border-x w-full shadow-xs hover:bg-muted transition-colors`}>
     <div>
       <h2 className="font-bold">{transaction.issuer}</h2>
       <p className="text-xs text-gray-600">{transaction.reason}</p>
