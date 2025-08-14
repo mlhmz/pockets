@@ -29,6 +29,17 @@ public class PocketRestController {
         return pocketMapper.mapPocketToQueryPocket(pocketService.createPocket(pocket));
     }
 
+    @PostMapping("/actions/recalculatePocketSum/{uuid}")
+    public ResponseEntity<QueryPocketDto> recalculatePocketSum(@PathVariable UUID uuid) {
+        try {
+            Pocket pocket = pocketService.findPocketByUuid(uuid);
+            pocketService.recalculatePocketSum(pocket);
+            return ResponseEntity.ok(pocketMapper.mapPocketToQueryPocket(pocket));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping
     public List<QueryPocketDto> findAllPockets() {
         List<Pocket> pockets = pocketService.findAllPockets();

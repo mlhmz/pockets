@@ -11,9 +11,10 @@ import { useTransactions } from "@/transaction/hooks/use-transactions";
 import { Transaction } from "@/types/Transaction";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { format } from "date-fns";
-import { CircleX, Loader } from "lucide-react";
+import { Calculator, CircleX, Loader } from "lucide-react";
 import { useMemo, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useRecalculateTransactionSum } from "./hooks/use-recalculate-transaction-sum";
 
 export const TransactionCard = ({ transaction, isFirst, isLast }: { transaction: Transaction, isFirst: boolean, isLast: boolean }) => {
   // How could i implement that the first element is top rounded and the last is bottom rounded?
@@ -35,6 +36,7 @@ export const TransactionList = () => {
   const { data: pocket } = useQueryPocket(uuid);
   const { data, isLoading, isFetching, fetchNextPage, hasNextPage } = useTransactions(uuid);
   const listRef = useRef<HTMLDivElement | null>(null);
+  const { execute: executeRecalculate  } = useRecalculateTransactionSum()
   const { mutate: mutateDelete } = useMutateDeletePocket();
   const navigate = useNavigate();
 
@@ -72,6 +74,13 @@ export const TransactionList = () => {
             <CurrencyDisplay className="text-xl font-bold" value={pocket?.transactionSum ?? 0} />
           </div>
           <div id="actions" className="flex justify-end gap-3">
+            <Button
+              variant="ghost"
+              className="flex gap-1"
+              onClick={() => executeRecalculate(uuid ?? "")}
+            >
+              <Calculator />
+            </Button>
             <PocketEditorDialog pocket={pocket} />
 
             <Dialog>
